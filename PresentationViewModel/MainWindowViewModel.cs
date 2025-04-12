@@ -9,13 +9,14 @@
 
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using TP.ConcurrentProgramming.Presentation.Model;
 using TP.ConcurrentProgramming.Presentation.ViewModel.MVVMLight;
 using ModelIBall = TP.ConcurrentProgramming.Presentation.Model.IBall;
 
 namespace TP.ConcurrentProgramming.Presentation.ViewModel
 {
-  public class MainWindowViewModel : ViewModelBase, IDisposable
+  public class MainWindowViewModel : ViewModelBase, IDisposable, IDataErrorInfo
   {
     #region ctor
 
@@ -53,27 +54,59 @@ namespace TP.ConcurrentProgramming.Presentation.ViewModel
             }
         }
     }
-
-    private void readTextBox()
+    public int Height
     {
-        if (int.TryParse(_numberOfBalls, out int validNumber))
+        get => height;
+        set
         {
-            RaisePropertyChanged();
-            if (validNumber > 0 && validNumber < 21 && validNumber != ballsCurrently)
+            if (height != value)
             {
-                ballsCurrently = validNumber;
-                Balls.Clear();
-                ModelLayer.Start(validNumber);
+                height = value;
             }
-        } 
+        }
     }
+
+    public int Width 
+    {
+        get => width;
+        set
+        {
+            if (width != value)
+            {
+                width = value;
+            }
+        }
+    }
+
+    public string this[string columnName]
+    {
+        get
+        {
+            if (columnName == nameof(NumberOfBalls))
+            {
+                if (!int.TryParse(NumberOfBalls, out int validNumber))
+                {
+                    return "Invalid number of balls.";
+                }
+                else if (validNumber < 1 || validNumber > 20)
+                {
+                    return "Number of balls must be between 1 and 20.";
+                }
+            }
+            return null;
+        }
+    } 
+
     public ObservableCollection<ModelIBall> Balls { get; } = new ObservableCollection<ModelIBall>();
 
-    #endregion public API
 
-    #region IDisposable
+        public string Error => throw new NotImplementedException();
 
-    protected virtual void Dispose(bool disposing)
+        #endregion public API
+
+        #region IDisposable
+
+        protected virtual void Dispose(bool disposing)
     {
       if (!Disposed)
       {
@@ -105,8 +138,23 @@ namespace TP.ConcurrentProgramming.Presentation.ViewModel
     private IDisposable Observer = null;
     private ModelAbstractApi ModelLayer;
     private bool Disposed = false;
-    private String _numberOfBalls = "0";
+    private String _numberOfBalls = "5";
     private int ballsCurrently = 0;
+    private int width;
+    private int height;
+        private void readTextBox()
+    {
+        if (int.TryParse(_numberOfBalls, out int validNumber))
+        {
+            RaisePropertyChanged();
+            if (validNumber > 0 && validNumber < 21 && validNumber != ballsCurrently)
+            {
+                ballsCurrently = validNumber;
+                Balls.Clear();
+                ModelLayer.Start(validNumber);
+            }
+        }
+    }
 
     #endregion private
   }
