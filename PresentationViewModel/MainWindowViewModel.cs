@@ -40,6 +40,33 @@ namespace TP.ConcurrentProgramming.Presentation.ViewModel
       Observer.Dispose();
     }
 
+    public RelayCommand ReadTextBox => new RelayCommand(() => readTextBox());
+
+    public String NumberOfBalls
+    {
+        get => _numberOfBalls;
+        set
+        {
+            if (_numberOfBalls != value)
+            {
+                _numberOfBalls = value;
+            }
+        }
+    }
+
+    private void readTextBox()
+    {
+        if (int.TryParse(_numberOfBalls, out int validNumber))
+        {
+            RaisePropertyChanged();
+            if (validNumber > 0 && validNumber < 21 && validNumber != ballsCurrently)
+            {
+                ballsCurrently = validNumber;
+                Balls.Clear();
+                ModelLayer.Start(validNumber);
+            }
+        } 
+    }
     public ObservableCollection<ModelIBall> Balls { get; } = new ObservableCollection<ModelIBall>();
 
     #endregion public API
@@ -78,6 +105,8 @@ namespace TP.ConcurrentProgramming.Presentation.ViewModel
     private IDisposable Observer = null;
     private ModelAbstractApi ModelLayer;
     private bool Disposed = false;
+    private String _numberOfBalls = "0";
+    private int ballsCurrently = 0;
 
     #endregion private
   }

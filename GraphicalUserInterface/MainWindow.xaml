@@ -9,7 +9,10 @@
     <Window.DataContext>
         <vm:MainWindowViewModel />
     </Window.DataContext>
-    <Border BorderThickness="4" BorderBrush="Green" Height="420" Width="400">
+    <Grid>
+        <TextBox Text="{Binding NumberOfBalls, UpdateSourceTrigger=PropertyChanged}" Height="20" Width="50" VerticalAlignment="Top" />
+        <Button Content="ok" Height="20" Width="50" Margin="140 00 10 10" VerticalAlignment="Top" Command="{Binding ReadTextBox}" />
+        <Border BorderThickness="4" BorderBrush="Green" Height="420" Width="400">
         <ItemsControl ItemsSource="{Binding Balls}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -29,4 +32,5 @@
             </ItemsControl.ItemContainerStyle>
         </ItemsControl>
     </Border>
+    </Grid>
 </Window>
