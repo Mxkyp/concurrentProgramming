@@ -10,10 +10,17 @@
         <vm:MainWindowViewModel />
     </Window.DataContext>
     <Grid>
-        <TextBox Text="{Binding NumberOfBalls,ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Height="20" Width="50" VerticalAlignment="Top"/>
-        <Button Content="ok" Height="20" Width="50" Margin="140 00 10 10" VerticalAlignment="Top" Command="{Binding ReadTextBox}" />
-        <Viewbox Stretch="Uniform">
-            <Border BorderThickness="4" BorderBrush="Green" Height="420" Width="400">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Center">
+            <TextBlock Text="Input the number of balls (0-21):" VerticalAlignment="Top" Margin="10 0 10 0"/>
+            <TextBox Text="{Binding NumberOfBalls,ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Margin="10 0 10 0" Height="20" Width="50" VerticalAlignment="Top"/>
+            <Button Content="start" Height="20" Width="50" VerticalAlignment="Top" Command="{Binding ReadTextBox}" />
+        </StackPanel>
+        <Viewbox Grid.Row = "1" Stretch="Uniform">
+            <Border BorderThickness="4" BorderBrush="DarkGreen" Height="420" Width="400" Margin="10">
                 <ItemsControl ItemsSource="{Binding Balls}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
@@ -22,7 +29,7 @@
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Ellipse Width= "{Binding Diameter}" Height="{Binding Diameter}" Fill="Blue" />
+                            <Ellipse Width= "{Binding Diameter}" Height="{Binding Diameter}" Fill="DarkMagenta" />
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                     <ItemsControl.ItemContainerStyle>
