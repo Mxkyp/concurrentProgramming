@@ -33,21 +33,23 @@ namespace TP.ConcurrentProgramming.Presentation.Model
       get { return TopBackingField; }
       private set
       {
-        double canvasHeight = 420;
-        if (TopBackingField == value || value > 0 || value < 1)
+        int canvasHeight = 420;
+        int padding = 4; // border padding
+        if (TopBackingField == value || value > canvasHeight - Diameter - 2 * padding || value < 0)
           return;
         TopBackingField = value;
         RaisePropertyChanged();
       }
     }
-
+    
     public double Left
     {
       get { return LeftBackingField; }
       private set
       {
-        double canvasWidth = 400;
-        if (LeftBackingField == value || value > 0|| value < 1)
+        int canvasWidth = 400;
+        int padding = 4; // border padding
+        if (LeftBackingField == value || value > canvasWidth - Diameter - 2 * padding || value < 0)
           return;
         LeftBackingField = value;
         RaisePropertyChanged();
