@@ -12,12 +12,12 @@
     <Grid>
         <TextBox Text="{Binding NumberOfBalls,ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Height="20" Width="50" VerticalAlignment="Top"/>
         <Button Content="ok" Height="20" Width="50" Margin="140 00 10 10" VerticalAlignment="Top" Command="{Binding ReadTextBox}" />
-        <Viewbox Stretch="Uniform">
+        <!-- Viewbox Stretch="Uniform"> -->
         <Border BorderThickness="4" BorderBrush="Green" Height="420" Width="400">
         <ItemsControl ItemsSource="{Binding Balls}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <Canvas />
+                    <Canvas Height="420" Width="400" />
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
@@ -33,6 +33,6 @@
             </ItemsControl.ItemContainerStyle>
         </ItemsControl>
     </Border>
-    </Viewbox>
+    <!-- </Viewbox> -->
     </Grid>
 </Window>

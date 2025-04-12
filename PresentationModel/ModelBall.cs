@@ -33,7 +33,8 @@ namespace TP.ConcurrentProgramming.Presentation.Model
       get { return TopBackingField; }
       private set
       {
-        if (TopBackingField == value)
+        double canvasHeight = 420;
+        if (TopBackingField == value || value > 0 || value < 1)
           return;
         TopBackingField = value;
         RaisePropertyChanged();
@@ -45,7 +46,8 @@ namespace TP.ConcurrentProgramming.Presentation.Model
       get { return LeftBackingField; }
       private set
       {
-        if (LeftBackingField == value)
+        double canvasWidth = 400;
+        if (LeftBackingField == value || value > 0|| value < 1)
           return;
         LeftBackingField = value;
         RaisePropertyChanged();

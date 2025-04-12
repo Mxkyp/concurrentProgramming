@@ -54,29 +54,6 @@ namespace TP.ConcurrentProgramming.Presentation.ViewModel
             }
         }
     }
-    public int Height
-    {
-        get => height;
-        set
-        {
-            if (height != value)
-            {
-                height = value;
-            }
-        }
-    }
-
-    public int Width 
-    {
-        get => width;
-        set
-        {
-            if (width != value)
-            {
-                width = value;
-            }
-        }
-    }
 
     public string this[string columnName]
     {
