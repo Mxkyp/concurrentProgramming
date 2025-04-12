@@ -20,11 +20,11 @@
             <Button Content="start" Height="20" Width="50" VerticalAlignment="Top" Command="{Binding ReadTextBox}" />
         </StackPanel>
         <Viewbox Grid.Row = "1" Stretch="Uniform">
-            <Border BorderThickness="4" BorderBrush="DarkGreen" Height="420" Width="400" Margin="10">
+            <Border BorderThickness="{Binding Border}" BorderBrush="DarkGreen" Height="{Binding Height}" Width="{Binding Width}" Margin="10">
                 <ItemsControl ItemsSource="{Binding Balls}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <Canvas Height="420" Width="400" />
+                            <Canvas Height="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=ItemsControl}}" />
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>

@@ -25,6 +25,15 @@ namespace TP.ConcurrentProgramming.Presentation.Model
       LeftBackingField = left;
       underneathBall.NewPositionNotification += NewPositionNotification;
     }
+    public ModelBall(double top, double left, int width, int height, int borderSize, LogicIBall underneathBall)
+    {
+      TopBackingField = top;
+      LeftBackingField = left;
+      HeightBackingField = height;
+      WidthBackingField = width;
+      BorderSizeBackingField = borderSize;
+      underneathBall.NewPositionNotification += NewPositionNotification;
+    }
 
     #region IBall
 
@@ -33,9 +42,7 @@ namespace TP.ConcurrentProgramming.Presentation.Model
       get { return TopBackingField; }
       private set
       {
-        int canvasHeight = 420;
-        int padding = 4; // border padding
-        if (TopBackingField == value || value > canvasHeight - Diameter - 2 * padding || value < 0)
+        if (TopBackingField == value || value > HeightBackingField - Diameter - 2 * BorderSizeBackingField || value < 0)
           return;
         TopBackingField = value;
         RaisePropertyChanged();
@@ -47,9 +54,7 @@ namespace TP.ConcurrentProgramming.Presentation.Model
       get { return LeftBackingField; }
       private set
       {
-        int canvasWidth = 400;
-        int padding = 4; // border padding
-        if (LeftBackingField == value || value > canvasWidth - Diameter - 2 * padding || value < 0)
+        if (LeftBackingField == value || value > WidthBackingField - Diameter - 2 * BorderSizeBackingField || value < 0)
           return;
         LeftBackingField = value;
         RaisePropertyChanged();
@@ -70,8 +75,11 @@ namespace TP.ConcurrentProgramming.Presentation.Model
 
     private double TopBackingField;
     private double LeftBackingField;
+    private int HeightBackingField;
+    private int WidthBackingField;
+    private int BorderSizeBackingField;
 
-    private void NewPositionNotification(object sender, IPosition e)
+        private void NewPositionNotification(object sender, IPosition e)
     {
       Top = e.y; Left = e.x;
     }

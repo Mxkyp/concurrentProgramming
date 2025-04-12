@@ -37,7 +37,7 @@ namespace TP.ConcurrentProgramming.Presentation.ViewModel
     {
       if (Disposed)
         throw new ObjectDisposedException(nameof(MainWindowViewModel));
-      ModelLayer.Start(numberOfBalls);
+      ModelLayer.Start(numberOfBalls, height, width, border);
       Observer.Dispose();
     }
 
@@ -51,6 +51,40 @@ namespace TP.ConcurrentProgramming.Presentation.ViewModel
             if (_numberOfBalls != value)
             {
                 _numberOfBalls = value;
+            }
+        }
+    }
+    public int Height 
+    {
+        get => height;
+        set
+        {
+            if (height != value)
+            {
+                height = value;
+            }
+        }
+    }
+
+    public int Width
+    {
+        get => width;
+        set
+        {
+            if (width != value)
+            {
+                width = value;
+            }
+        }
+    }
+    public int Border 
+    {
+        get => border;
+        set
+        {
+            if (border != value)
+            {
+                border = value;
             }
         }
     }
@@ -117,8 +151,9 @@ namespace TP.ConcurrentProgramming.Presentation.ViewModel
     private bool Disposed = false;
     private String _numberOfBalls = "5";
     private int ballsCurrently = 0;
-    private int width;
-    private int height;
+    private int width = 400;
+    private int height = 420;
+    private int border = 4;
         private void readTextBox()
     {
         if (int.TryParse(_numberOfBalls, out int validNumber))
@@ -128,7 +163,7 @@ namespace TP.ConcurrentProgramming.Presentation.ViewModel
             {
                 ballsCurrently = validNumber;
                 Balls.Clear();
-                ModelLayer.Start(validNumber);
+                ModelLayer.Start(validNumber, width, height, border);
             }
         }
     }
