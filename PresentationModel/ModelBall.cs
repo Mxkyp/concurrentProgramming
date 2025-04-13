@@ -23,9 +23,9 @@ namespace TP.ConcurrentProgramming.Presentation.Model
     {
       TopBackingField = top;
       LeftBackingField = left;
-      HeightBackingField = height;
-      WidthBackingField = width;
-      BorderSizeBackingField = borderSize;
+      CanvasHeight = height;
+      CanvasWidth = width;
+      CanvasBorder = borderSize;
       underneathBall.NewPositionNotification += NewPositionNotification;
     }
 
@@ -36,7 +36,7 @@ namespace TP.ConcurrentProgramming.Presentation.Model
       get { return TopBackingField; }
       private set
       {
-        if (TopBackingField == value || value > HeightBackingField - Diameter - 2 * BorderSizeBackingField || value < 0)
+        if (TopBackingField == value || value > CanvasHeight - Diameter - 2 * CanvasBorder || value < 0)
           return;
         TopBackingField = value;
         RaisePropertyChanged();
@@ -48,7 +48,7 @@ namespace TP.ConcurrentProgramming.Presentation.Model
       get { return LeftBackingField; }
       private set
       {
-        if (LeftBackingField == value || value > WidthBackingField - Diameter - 2 * BorderSizeBackingField || value < 0)
+        if (LeftBackingField == value || value > CanvasWidth - Diameter - 2 * CanvasBorder || value < 0)
           return;
         LeftBackingField = value;
         RaisePropertyChanged();
@@ -69,9 +69,9 @@ namespace TP.ConcurrentProgramming.Presentation.Model
 
     private double TopBackingField;
     private double LeftBackingField;
-    private double HeightBackingField;
-    private double WidthBackingField;
-    private double BorderSizeBackingField;
+    private readonly double CanvasHeight;
+    private readonly double CanvasWidth;
+    private readonly double CanvasBorder;
 
     private void NewPositionNotification(object sender, IPosition e)
     {
