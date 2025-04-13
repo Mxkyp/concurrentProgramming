@@ -9,6 +9,7 @@
 //  by introducing yourself and telling us what you do with this community.
 //_____________________________________________________________________________________________________________________________________
 
+using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
@@ -36,8 +37,11 @@ namespace TP.ConcurrentProgramming.Presentation.Model
       get { return TopBackingField; }
       private set
       {
-        if (TopBackingField == value || value > CanvasHeight - Diameter - 2 * CanvasBorder || value < 0)
-          return;
+
+        double maximumTop = CanvasHeight - Diameter - 2 * CanvasBorder;
+        value = Math.Clamp(value, 0.0, maximumTop);
+        if (TopBackingField == value)
+            return;
         TopBackingField = value;
         RaisePropertyChanged();
       }
@@ -48,8 +52,10 @@ namespace TP.ConcurrentProgramming.Presentation.Model
       get { return LeftBackingField; }
       private set
       {
-        if (LeftBackingField == value || value > CanvasWidth - Diameter - 2 * CanvasBorder || value < 0)
-          return;
+        double maximumLeft = CanvasWidth - Diameter - 2 * CanvasBorder;
+        value = Math.Clamp(value, 0.0, maximumLeft);
+        if (LeftBackingField == value)
+            return;
         LeftBackingField = value;
         RaisePropertyChanged();
       }
