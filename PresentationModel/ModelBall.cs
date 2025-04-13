@@ -25,7 +25,7 @@ namespace TP.ConcurrentProgramming.Presentation.Model
       LeftBackingField = left;
       underneathBall.NewPositionNotification += NewPositionNotification;
     }
-    public ModelBall(double top, double left, int width, int height, int borderSize, LogicIBall underneathBall)
+    public ModelBall(double top, double left, double width, double height, double borderSize, LogicIBall underneathBall)
     {
       TopBackingField = top;
       LeftBackingField = left;
@@ -75,11 +75,11 @@ namespace TP.ConcurrentProgramming.Presentation.Model
 
     private double TopBackingField;
     private double LeftBackingField;
-    private int HeightBackingField;
-    private int WidthBackingField;
-    private int BorderSizeBackingField;
+    private double HeightBackingField;
+    private double WidthBackingField;
+    private double BorderSizeBackingField;
 
-        private void NewPositionNotification(object sender, IPosition e)
+    private void NewPositionNotification(object sender, IPosition e)
     {
       Top = e.y; Left = e.x;
     }

@@ -54,7 +54,7 @@ namespace TP.ConcurrentProgramming.Presentation.ViewModel
             }
         }
     }
-    public int Height 
+    public double Height 
     {
         get => height;
         set
@@ -66,7 +66,7 @@ namespace TP.ConcurrentProgramming.Presentation.ViewModel
         }
     }
 
-    public int Width
+    public double Width
     {
         get => width;
         set
@@ -77,7 +77,7 @@ namespace TP.ConcurrentProgramming.Presentation.ViewModel
             }
         }
     }
-    public int Border 
+    public double Border 
     {
         get => border;
         set
@@ -151,9 +151,9 @@ namespace TP.ConcurrentProgramming.Presentation.ViewModel
     private bool Disposed = false;
     private String _numberOfBalls = "5";
     private int ballsCurrently = 0;
-    private int width = 400;
-    private int height = 420;
-    private int border = 4;
+    private double width = 400;
+    private double height = 420;
+    private double border = 4;
         private void readTextBox()
     {
         if (int.TryParse(_numberOfBalls, out int validNumber))
