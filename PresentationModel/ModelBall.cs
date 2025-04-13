@@ -19,12 +19,6 @@ namespace TP.ConcurrentProgramming.Presentation.Model
 {
   internal class ModelBall : IBall
   {
-    public ModelBall(double top, double left, LogicIBall underneathBall)
-    {
-      TopBackingField = top;
-      LeftBackingField = left;
-      underneathBall.NewPositionNotification += NewPositionNotification;
-    }
     public ModelBall(double top, double left, double width, double height, double borderSize, LogicIBall underneathBall)
     {
       TopBackingField = top;
