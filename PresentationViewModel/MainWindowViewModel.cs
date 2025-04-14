@@ -37,7 +37,7 @@ namespace TP.ConcurrentProgramming.Presentation.ViewModel
     {
       if (Disposed)
         throw new ObjectDisposedException(nameof(MainWindowViewModel));
-      ModelLayer.Start(numberOfBalls, height, width, border);
+      ModelLayer.Start(numberOfBalls, width, height, border);
       Observer.Dispose();
     }
 
@@ -89,6 +89,17 @@ namespace TP.ConcurrentProgramming.Presentation.ViewModel
         }
     }
 
+    public bool InputEnabled 
+    {
+        get => inputEnabled;
+        set
+        {
+            if (inputEnabled != value)
+            {
+                inputEnabled = value;
+            }
+        }
+    }
     public string this[string columnName]
     {
         get
@@ -150,20 +161,20 @@ namespace TP.ConcurrentProgramming.Presentation.ViewModel
     private ModelAbstractApi ModelLayer;
     private bool Disposed = false;
     private String _numberOfBalls = "5";
-    private int ballsCurrently = 0;
     private double width = 400;
     private double height = 420;
     private double border = 4;
+    private bool inputEnabled = true;
         private void readTextBox()
     {
         if (int.TryParse(_numberOfBalls, out int validNumber))
         {
             RaisePropertyChanged();
-            if (validNumber > 0 && validNumber < 21 && validNumber != ballsCurrently)
+            if (validNumber > 0 && validNumber < 21 )
             {
-                ballsCurrently = validNumber;
-                Balls.Clear();
-                ModelLayer.Start(validNumber, width, height, border);
+                this.Start(validNumber);
+                inputEnabled = false;
+                RaisePropertyChanged(nameof(InputEnabled));
             }
         }
     }

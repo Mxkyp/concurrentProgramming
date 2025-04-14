@@ -16,8 +16,8 @@
         </Grid.RowDefinitions>
         <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Center">
             <TextBlock Text="Input the number of balls (0-21):" VerticalAlignment="Top" Margin="10 0 10 0"/>
-            <TextBox Text="{Binding NumberOfBalls,ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Margin="10 0 10 0" Height="20" Width="50" VerticalAlignment="Top"/>
-            <Button Content="start" Height="20" Width="50" VerticalAlignment="Top" Command="{Binding ReadTextBox}" />
+            <TextBox Text="{Binding NumberOfBalls,ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding InputEnabled}" Margin="10 0 10 0" Height="20" Width="50" VerticalAlignment="Top"/>
+            <Button Content="start" Height="20" Width="50" VerticalAlignment="Top" Command="{Binding ReadTextBox}" IsEnabled="{Binding InputEnabled}"/>
         </StackPanel>
         <Viewbox Grid.Row = "1" Stretch="Uniform">
             <Border BorderThickness="{Binding Border}" BorderBrush="DarkGreen" Height="{Binding Height}" Width="{Binding Width}" Margin="10">
