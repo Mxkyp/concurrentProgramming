@@ -51,6 +51,7 @@ namespace TP.ConcurrentProgramming.Presentation.ViewModel
             if (_numberOfBalls != value)
             {
                 _numberOfBalls = value;
+                RaisePropertyChanged(nameof(Error));
             }
         }
     }
@@ -115,14 +116,23 @@ namespace TP.ConcurrentProgramming.Presentation.ViewModel
                     return "Number of balls must be between 1 and 20.";
                 }
             }
-            return null;
+            return "";
         }
     } 
+
+    public string Error
+    {
+        get
+        {
+            string error = this[nameof(NumberOfBalls)];
+            return error;
+        }
+    }
+
 
     public ObservableCollection<ModelIBall> Balls { get; } = new ObservableCollection<ModelIBall>();
 
 
-        public string Error => throw new NotImplementedException();
 
         #endregion public API
 
@@ -165,6 +175,7 @@ namespace TP.ConcurrentProgramming.Presentation.ViewModel
     private double height = 420;
     private double border = 4;
     private bool inputEnabled = true;
+    private string error = "";
         private void readTextBox()
     {
         if (int.TryParse(_numberOfBalls, out int validNumber))
