@@ -14,18 +14,20 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Center">
-            <TextBlock Text="Input the number of balls 1-20):" VerticalAlignment="Top" Margin="10 0 10 0"/>
-            <TextBox Text="{Binding NumberOfBalls,ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding InputEnabled}" Margin="10 0 10 0" Height="20" Width="50" VerticalAlignment="Top"/>
-            <Button Content="start" Height="20" Width="50" VerticalAlignment="Top" Command="{Binding ReadTextBox}"  IsEnabled="{Binding InputEnabled}"/>
-            <TextBlock Text="{Binding Error}" Width="160" Height="20" FontSize="8" TextAlignment="Center" VerticalAlignment="Center" Margin="10 0 10 0"/>
-        </StackPanel>
+        <Viewbox MaxHeight="35" Stretch="Uniform" Grid.Row="0" >
+            <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center">
+                <TextBlock Text="Input the number of balls 1-20:" VerticalAlignment="Top" Margin="10 0 10 0"/>
+                <TextBox Text="{Binding NumberOfBalls,ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding InputEnabled}" Margin="10 0 10 0" Height="20" Width="50" VerticalAlignment="Top"/>
+                <Button Content="start" Height="20" Width="50" VerticalAlignment="Top" Command="{Binding ReadTextBox}"  IsEnabled="{Binding InputEnabled}"/>
+                <TextBlock Text="{Binding Error}" Width="160" Height="20" FontSize="8" TextAlignment="Center" VerticalAlignment="Center" Margin="10 0 10 0"/>
+            </StackPanel>
+        </Viewbox>
         <Viewbox Grid.Row = "1" Stretch="Uniform">
             <Border BorderThickness="{Binding Border}" BorderBrush="DarkGreen" Height="{Binding Height}" Width="{Binding Width}" Margin="10">
                 <ItemsControl ItemsSource="{Binding Balls}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <Canvas Height="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=ItemsControl}}" />
+                            <Canvas />
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
