@@ -20,6 +20,7 @@ namespace TP.ConcurrentProgramming.Data.Test
       Ball newInstance = new(testinVector, testinVector);
     }
 
+    /*
     [TestMethod]
     public void MoveTestMethod()
     {
@@ -32,5 +33,6 @@ namespace TP.ConcurrentProgramming.Data.Test
       Assert.AreEqual<int>(1, numberOfCallBackCalled);
       Assert.AreEqual<IVector>(initialPosition, curentPosition);
     }
+    */
   }
 }

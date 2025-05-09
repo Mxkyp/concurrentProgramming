@@ -18,6 +18,8 @@ namespace TP.ConcurrentProgramming.Data
     {
       Position = initialPosition;
       Velocity = initialVelocity;
+      Thread t = new Thread(new ThreadStart(MoveContinuously));
+      t.Start();
     }
 
     #endregion ctor
@@ -39,12 +41,20 @@ namespace TP.ConcurrentProgramming.Data
       NewPositionNotification?.Invoke(this, Position);
     }
 
-    internal void Move(Vector delta)
+    private void Move()
     {
-      Position = new Vector(Position.x + delta.x, Position.y + delta.y);
+      Position = new Vector(Position.x + Velocity.x, Position.y + Velocity.y);
       RaiseNewPositionChangeNotification();
     }
+    private void MoveContinuously()
+    {
+        while (true)
+        {
+            Move();
+            Thread.Sleep(50);  // Adjust the interval (in milliseconds) as needed
+        }
+    }
 
-    #endregion private
-  }
+        #endregion private
+    }
 }
