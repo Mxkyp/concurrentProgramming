@@ -18,6 +18,10 @@ namespace TP.ConcurrentProgramming.Data
     {
       Position = initialPosition;
       Velocity = initialVelocity;
+    }
+
+    public void start()
+    {
       Thread t = new Thread(new ThreadStart(MoveContinuously));
       t.Start();
     }
@@ -29,29 +33,36 @@ namespace TP.ConcurrentProgramming.Data
     public event EventHandler<IVector>? NewPositionNotification;
 
     public IVector Velocity { get; set; }
+    public IVector Position{ get; set; }
 
-    #endregion IBall
+        #endregion IBall
 
-    #region private
+        #region private
 
-    private Vector Position;
+        private static Barrier _syncBarrier = new Barrier(20);    //private Vector Position;
+        private static object lockObj = new object();
 
-    private void RaiseNewPositionChangeNotification()
+        private void RaiseNewPositionChangeNotification()
     {
       NewPositionNotification?.Invoke(this, Position);
     }
 
     private void Move()
     {
-      Position = new Vector(Position.x + Velocity.x, Position.y + Velocity.y);
-      RaiseNewPositionChangeNotification();
+        Position = new Vector(Position.x + Velocity.x, Position.y + Velocity.y);
+        _syncBarrier.SignalAndWait();
+        lock (lockObj)
+        {
+            RaiseNewPositionChangeNotification();
+
+        }
     }
     private void MoveContinuously()
     {
         while (true)
         {
             Move();
-            Thread.Sleep(50);  // Adjust the interval (in milliseconds) as needed
+            Thread.Sleep(40);  // Adjust the interval (in milliseconds) as needed
         }
     }
 
