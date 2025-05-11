@@ -71,7 +71,8 @@ namespace TP.ConcurrentProgramming.BusinessLogic
       if (position.x <= 0 || position.x >= dim.TableWidth - dim.BallDimension - 2 * dim.TableBorderSize)
       {
         // Reverse X velocity (elastic bounce)
-        _dataBall.Velocity = new Vector(-_dataBall.Velocity.x, _dataBall.Velocity.y);
+        _dataBall.Velocity.x = -_dataBall.Velocity.x;
+        _dataBall.Velocity.y =  _dataBall.Velocity.y;
         bounced = true;
       }
 
@@ -79,7 +80,8 @@ namespace TP.ConcurrentProgramming.BusinessLogic
       if (position.y <= 0 || position.y >= dim.TableHeight - dim.BallDimension - 2 * dim.TableBorderSize)
       {
         // Reverse Y velocity (elastic bounce)
-        _dataBall.Velocity = new Vector(_dataBall.Velocity.x, -_dataBall.Velocity.y);
+        _dataBall.Velocity.x = _dataBall.Velocity.x;
+        _dataBall.Velocity.y = -_dataBall.Velocity.y;
         bounced = true;
       }
     }
@@ -137,15 +139,12 @@ namespace TP.ConcurrentProgramming.BusinessLogic
       double impulse = -impactSpeed;  // Impulse magnitude
 
       // Update velocities based on the impulse
-      _dataBall.Velocity = new Vector(
-          _dataBall.Velocity.x + impulse * nx,  // Velocity change for ball 1
-          _dataBall.Velocity.y + impulse * ny
-      );
+      _dataBall.Velocity.x = _dataBall.Velocity.x+ impulse * nx;  // Velocity change for ball 1
+      _dataBall.Velocity.y = _dataBall.Velocity.y + impulse * ny;
+      
 
-      other._dataBall.Velocity = new Vector(
-          other._dataBall.Velocity.x - impulse * nx,  // Velocity change for ball 2
-          other._dataBall.Velocity.y - impulse * ny
-      );
+      other._dataBall.Velocity.x =  other._dataBall.Velocity.x - impulse * nx;  // Velocity change for ball 2
+      other._dataBall.Velocity.y = other._dataBall.Velocity.y - impulse * ny;
     }
 
 
