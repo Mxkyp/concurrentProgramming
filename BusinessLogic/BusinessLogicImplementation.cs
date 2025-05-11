@@ -53,10 +53,6 @@ namespace TP.ConcurrentProgramming.BusinessLogic
             upperLayerHandler(new Position(startingPosition.x, startingPosition.y), newBall);
         });
 
-        foreach (var ball in _balls)
-        {
-            ball.start();
-        }
     }
 
     #endregion BusinessLogicAbstractAPI

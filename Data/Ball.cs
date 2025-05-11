@@ -18,14 +18,9 @@ namespace TP.ConcurrentProgramming.Data
     {
       Position = initialPosition;
       Velocity = initialVelocity;
-    }
-
-    public void start()
-    {
       Thread t = new Thread(new ThreadStart(MoveContinuously));
       t.Start();
     }
-
     public void dispose()
     {
       disposed = true;

@@ -24,13 +24,8 @@ namespace TP.ConcurrentProgramming.BusinessLogic
       _syncBarrier = barrier;
       _dataBall = ball;
       otherBalls = OtherBalls;
-      ball.NewPositionNotification += RaisePositionChangeEvent;
       this.dim = dim;
-    }
-
-    public void start()
-    {
-      _dataBall.start();
+      ball.NewPositionNotification += RaisePositionChangeEvent;
     }
 
     public void dispose()
