@@ -26,6 +26,11 @@ namespace TP.ConcurrentProgramming.Data
       t.Start();
     }
 
+    public void dispose()
+    {
+      disposed = true;
+    }
+
     #endregion ctor
 
     #region IBall
@@ -38,7 +43,7 @@ namespace TP.ConcurrentProgramming.Data
     #endregion IBall
 
     #region private
-
+    private bool disposed = false;
 
     private void RaiseNewPositionChangeNotification()
     {
@@ -53,7 +58,7 @@ namespace TP.ConcurrentProgramming.Data
 
     private void MoveContinuously()
     {
-        while (true)
+        while (!disposed)
         {
             Move();
             Thread.Sleep(40);  // Adjust the interval (in milliseconds) as needed

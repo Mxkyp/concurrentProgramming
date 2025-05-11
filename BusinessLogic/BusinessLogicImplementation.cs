@@ -33,6 +33,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
     {
       if (Disposed)
         throw new ObjectDisposedException(nameof(BusinessLogicImplementation));
+      KillBalls();
       layerBellow.Dispose();
       Disposed = true;
     }
@@ -63,6 +64,14 @@ namespace TP.ConcurrentProgramming.BusinessLogic
     private bool Disposed = false;
     private List<Ball> _balls = new List<Ball>();
     private readonly UnderneathLayerAPI layerBellow;
+
+    private void KillBalls()
+    {
+        foreach (var ball in _balls)
+        {
+            ball.dispose();
+        }
+    }
 
 
     #endregion private

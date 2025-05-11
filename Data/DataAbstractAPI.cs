@@ -61,5 +61,6 @@ namespace TP.ConcurrentProgramming.Data
     IVector Position { get; set; }
 
     public void start();
+    public void dispose();
   }
 }

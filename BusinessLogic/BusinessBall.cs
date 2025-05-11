@@ -36,6 +36,12 @@ namespace TP.ConcurrentProgramming.BusinessLogic
       _dataBall.start();
     }
 
+    public void dispose()
+    {
+      _dataBall.dispose();
+      _syncBarrier.RemoveParticipant();
+    }
+
     #region IBall
 
     public event EventHandler<IPosition>? NewPositionNotification;
