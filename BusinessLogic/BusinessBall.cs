@@ -18,7 +18,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
     List<Ball> otherBalls;
     private Dimensions dim;
 
-    public Ball(Data.IBall ball, List<Ball> OtherBalls, Dimensions dim)
+    internal Ball(Data.IBall ball, List<Ball> OtherBalls, Dimensions dim)
     {
       currentPosition = new Position(ball.Position.x, ball.Position.y);
       _syncBarrier.AddParticipant();
