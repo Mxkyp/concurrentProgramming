@@ -13,9 +13,9 @@ namespace TP.ConcurrentProgramming.BusinessLogic
 {
   internal class Ball : IBall
   {
-    Data.IBall _dataBall;
-    public Position currentPosition;
-    List<Ball> otherBalls;
+    private Data.IBall _dataBall;
+    private Position currentPosition;
+    private List<Ball> otherBalls;
     private Dimensions dim;
 
     internal Ball(Data.IBall ball, List<Ball> OtherBalls, Dimensions dim, Barrier barrier)
