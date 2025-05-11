@@ -18,15 +18,10 @@ namespace TP.ConcurrentProgramming.BusinessLogic
     List<Ball> otherBalls;
     private Dimensions dim;
 
-    internal Ball(Data.IBall ball, List<Ball> OtherBalls, Dimensions dim)
+    internal Ball(Data.IBall ball, List<Ball> OtherBalls, Dimensions dim, Barrier barrier)
     {
       currentPosition = new Position(ball.Position.x, ball.Position.y);
-      _syncBarrier.AddParticipant();
-      if (!barrierUpdated)
-      {
-        _syncBarrier.RemoveParticipant();
-        barrierUpdated = true;
-      }
+      _syncBarrier = barrier;
       _dataBall = ball;
       otherBalls = OtherBalls;
       ball.NewPositionNotification += RaisePositionChangeEvent;
@@ -52,7 +47,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
 
     #region private
 
-    private static Barrier _syncBarrier = new(1);    //private Vector Position;
+    private Barrier _syncBarrier;    //private Vector Position;
     private static object lockObj = new object();
     private static bool barrierUpdated = false;
     private void RaisePositionChangeEvent(object? sender, Data.IVector e)

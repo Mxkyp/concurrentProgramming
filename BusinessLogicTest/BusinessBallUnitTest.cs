@@ -17,10 +17,11 @@ namespace TP.ConcurrentProgramming.BusinessLogic.Test
     public void MoveTestMethod()
     {
       DataBallFixture dataBallFixture = new DataBallFixture();
-      Ball newInstance = new(dataBallFixture);
+      List<Ball> balls = new List<Ball>();
+      Ball newInstance = new(dataBallFixture, balls, new Dimensions(10.0, 10.0, 10.0, 10.0), new Barrier(1));
       int numberOfCallBackCalled = 0;
       newInstance.NewPositionNotification += (sender, position) => { Assert.IsNotNull(sender); Assert.IsNotNull(position); numberOfCallBackCalled++; };
-      dataBallFixture.Move();
+      dataBallFixture.start();
       Assert.AreEqual<int>(1, numberOfCallBackCalled);
     }
 
@@ -28,15 +29,30 @@ namespace TP.ConcurrentProgramming.BusinessLogic.Test
 
     private class DataBallFixture : Data.IBall
     {
-      public Data.IVector Velocity { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+      public DataBallFixture() {
+        Position = new VectorFixture(0, 0);
+        Velocity = new VectorFixture(0, 0);
+      }
+
+      public Data.IVector Velocity { get; set; }
+      public Data.IVector Position { get; set; }
+
+      public void start()
+      {
+        Move();
+      }
+
+      public void dispose()
+      {
+
+      }
 
       public event EventHandler<Data.IVector>? NewPositionNotification;
 
-      internal void Move()
+      private void Move()
       {
         NewPositionNotification?.Invoke(this, new VectorFixture(0.0, 0.0));
       }
-    }
 
     private class VectorFixture : Data.IVector
     {
@@ -49,6 +65,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic.Test
       public double y { get; init; }
     }
 
+    }
     #endregion testing instrumentation
   }
 }
