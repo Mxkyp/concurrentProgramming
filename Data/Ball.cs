@@ -35,14 +35,12 @@ namespace TP.ConcurrentProgramming.Data
     public IVector Velocity { get; set; }
     public IVector Position{ get; set; }
 
-        #endregion IBall
+    #endregion IBall
 
-        #region private
+    #region private
 
-        private static Barrier _syncBarrier = new Barrier(20);    //private Vector Position;
-        private static object lockObj = new object();
 
-        private void RaiseNewPositionChangeNotification()
+    private void RaiseNewPositionChangeNotification()
     {
       NewPositionNotification?.Invoke(this, Position);
     }
@@ -50,13 +48,9 @@ namespace TP.ConcurrentProgramming.Data
     private void Move()
     {
         Position = new Vector(Position.x + Velocity.x, Position.y + Velocity.y);
-        _syncBarrier.SignalAndWait();
-        lock (lockObj)
-        {
-            RaiseNewPositionChangeNotification();
-
-        }
+        RaiseNewPositionChangeNotification();
     }
+
     private void MoveContinuously()
     {
         while (true)
