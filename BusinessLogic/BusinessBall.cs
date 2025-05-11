@@ -13,10 +13,6 @@ namespace TP.ConcurrentProgramming.BusinessLogic
 {
   internal class Ball : IBall
   {
-    private Data.IBall _dataBall;
-    private Position currentPosition;
-    private List<Ball> otherBalls;
-    private Dimensions dim;
 
     internal Ball(Data.IBall ball, List<Ball> OtherBalls, Dimensions dim, Barrier barrier)
     {
@@ -42,6 +38,10 @@ namespace TP.ConcurrentProgramming.BusinessLogic
 
     #region private
 
+    private Data.IBall _dataBall;
+    private Position currentPosition;
+    private List<Ball> otherBalls;
+    private Dimensions dim;
     private Barrier _syncBarrier;    //private Vector Position;
     private static object lockObj = new object();
     private void RaisePositionChangeEvent(object? sender, Data.IVector e)
