@@ -63,6 +63,7 @@ namespace TP.ConcurrentProgramming.Presentation.ViewModel
             if (height != value)
             {
                 height = value;
+                RaisePropertyChanged();
             }
         }
     }
@@ -75,6 +76,7 @@ namespace TP.ConcurrentProgramming.Presentation.ViewModel
             if (width != value)
             {
                 width = value;
+                RaisePropertyChanged();
             }
         }
     }
@@ -86,6 +88,7 @@ namespace TP.ConcurrentProgramming.Presentation.ViewModel
             if (border != value)
             {
                 border = value;
+                RaisePropertyChanged();
             }
         }
     }
@@ -171,9 +174,9 @@ namespace TP.ConcurrentProgramming.Presentation.ViewModel
     private ModelAbstractApi ModelLayer;
     private bool Disposed = false;
     private String _numberOfBalls = "5";
-    private double width = 400;
-    private double height = 420;
-    private double border = 4;
+    private double width;
+    private double height;
+    private double border;
     private bool inputEnabled = true;
     private string error = "";
         private void readTextBox()
