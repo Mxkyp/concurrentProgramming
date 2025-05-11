@@ -25,8 +25,8 @@ namespace TP.ConcurrentProgramming.PresentationView
       MainWindowViewModel viewModel = (MainWindowViewModel)DataContext;
       double screenWidth = SystemParameters.PrimaryScreenWidth;
       double screenHeight = SystemParameters.PrimaryScreenHeight;
-      viewModel.Width = screenWidth - 100;
-      viewModel.Height = screenHeight - 100;
+      viewModel.Width = screenWidth/2;
+      viewModel.Height = screenHeight/2 ;
       viewModel.Border = 4;
     }
 

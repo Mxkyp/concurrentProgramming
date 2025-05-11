@@ -16,8 +16,9 @@ namespace TP.ConcurrentProgramming.BusinessLogic
     Data.IBall _dataBall;
     public Position currentPosition;
     List<Ball> otherBalls;
+    private Dimensions dim;
 
-    public Ball(Data.IBall ball, List<Ball> OtherBalls)
+    public Ball(Data.IBall ball, List<Ball> OtherBalls, Dimensions dim)
     {
       currentPosition = new Position(ball.Position.x, ball.Position.y);
       _syncBarrier.AddParticipant();
@@ -29,6 +30,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
       _dataBall = ball;
       otherBalls = OtherBalls;
       ball.NewPositionNotification += RaisePositionChangeEvent;
+      this.dim = dim;
     }
 
     public void start()
@@ -71,7 +73,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
       bool bounced = false;
 
       // Check X bounds (0 to 400)
-      if (position.x <= 0 || position.x >= 372)
+      if (position.x <= 0 || position.x >= dim.TableWidth - dim.BallDimension - 2 * dim.TableBorderSize)
       {
         // Reverse X velocity (elastic bounce)
         _dataBall.Velocity = new Vector(-_dataBall.Velocity.x, _dataBall.Velocity.y);
@@ -79,7 +81,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
       }
 
       // Check Y bounds (0 to 400)
-      if (position.y <= 0 || position.y >= 392)
+      if (position.y <= 0 || position.y >= dim.TableHeight - dim.BallDimension - 2 * dim.TableBorderSize)
       {
         // Reverse Y velocity (elastic bounce)
         _dataBall.Velocity = new Vector(_dataBall.Velocity.x, -_dataBall.Velocity.y);
@@ -98,7 +100,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
         double dy = currentPosition.y - other.currentPosition.y;
         double distance = Math.Sqrt(dx * dx + dy * dy);
 
-        double collisionDistance = 20; // Example: 10 radius per ball
+        double collisionDistance = dim.BallDimension; // Example: 10 radius per ball
 
         if (distance <= collisionDistance)
         {

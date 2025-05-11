@@ -46,7 +46,8 @@ namespace TP.ConcurrentProgramming.Presentation.Model
 
     public override void Start(int numberOfBalls, double width, double height, double borderSize)
     {
-      layerBellow.Start(numberOfBalls, (pos, ball) => StartHandler(pos, ball, width, height, borderSize));
+      double ballDia = 0.05 * height;
+      layerBellow.Start(numberOfBalls, (pos, ball) => StartHandler(pos, ball, width, height, borderSize, ballDia), width, height, borderSize, ballDia);
     }
 
     #endregion ModelAbstractApi
@@ -63,9 +64,9 @@ namespace TP.ConcurrentProgramming.Presentation.Model
     private readonly IObservable<EventPattern<BallChaneEventArgs>> eventObservable = null;
     private readonly UnderneathLayerAPI layerBellow = null;
 
-    private void StartHandler(BusinessLogic.IPosition position, BusinessLogic.IBall ball, double width, double height, double borderSize)
+    private void StartHandler(BusinessLogic.IPosition position, BusinessLogic.IBall ball, double width, double height, double borderSize, double ballDia)
     {
-      ModelBall newBall = new ModelBall(position.x, position.y, width, height, borderSize, ball) { Diameter = 20.0};
+      ModelBall newBall = new ModelBall(position.x, position.y, width, height, borderSize, ball) { Diameter = ballDia};
       BallChanged.Invoke(this, new BallChaneEventArgs() { Ball = newBall });
     }
 

@@ -38,15 +38,16 @@ namespace TP.ConcurrentProgramming.BusinessLogic
       Disposed = true;
     }
 
-    public override void Start(int numberOfBalls, Action<IPosition, IBall> upperLayerHandler)
+    public override void Start(int numberOfBalls, Action<IPosition, IBall> upperLayerHandler, double width, double height, double borderSize, double ballDia)
     {
       if (Disposed)
         throw new ObjectDisposedException(nameof(BusinessLogicImplementation));
       if (upperLayerHandler == null)
         throw new ArgumentNullException(nameof(upperLayerHandler));
+        dimensions = new Dimensions(ballDia, height, width, borderSize);
         layerBellow.Start(numberOfBalls, (startingPosition, databall) =>
         {
-            var newBall = new Ball(databall, _balls);
+            var newBall = new Ball(databall, _balls, dimensions);
             _balls.Add(newBall); // Save it
             upperLayerHandler(new Position(startingPosition.x, startingPosition.y), newBall);
         });
@@ -64,6 +65,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
     private bool Disposed = false;
     private List<Ball> _balls = new List<Ball>();
     private readonly UnderneathLayerAPI layerBellow;
+    private Dimensions dimensions;
 
     private void KillBalls()
     {
