@@ -14,35 +14,31 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Viewbox MaxHeight="35" Stretch="Uniform" Grid.Row="0" >
-            <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center">
-                <TextBlock Text="Input the number of balls 1-20:" VerticalAlignment="Top" Margin="10 0 10 0"/>
-                <TextBox Text="{Binding NumberOfBalls,ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding InputEnabled}" Margin="10 0 10 0" Height="20" Width="50" VerticalAlignment="Top"/>
-                <Button Content="start" Height="20" Width="50" VerticalAlignment="Top" Command="{Binding ReadTextBox}"  IsEnabled="{Binding InputEnabled}"/>
-                <TextBlock Text="{Binding Error}" Width="160" Height="20" FontSize="8" TextAlignment="Center" VerticalAlignment="Center" Margin="10 0 10 0"/>
-            </StackPanel>
-        </Viewbox>
-        <Viewbox Grid.Row = "1" Stretch="Uniform">
-            <Border BorderThickness="{Binding Border}" BorderBrush="DarkGreen" Height="{Binding Height}" Width="{Binding Width}" Margin="10">
-                <ItemsControl ItemsSource="{Binding Balls}">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <Canvas />
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Ellipse Width= "{Binding Diameter}" Height="{Binding Diameter}" Fill="DarkMagenta" />
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                    <ItemsControl.ItemContainerStyle>
-                        <Style TargetType="ContentPresenter">
-                            <Setter Property="Canvas.Top" Value="{Binding Top}" />
-                            <Setter Property="Canvas.Left" Value="{Binding Left}" />
-                        </Style>
-                    </ItemsControl.ItemContainerStyle>
-                </ItemsControl>
-            </Border>
-        </Viewbox>
+        <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center">
+            <TextBlock Text="Input the number of balls 1-20:" VerticalAlignment="Top" Margin="10 0 10 0"/>
+            <TextBox Text="{Binding NumberOfBalls,ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding InputEnabled}" Margin="10 0 10 0" Height="20" Width="50" VerticalAlignment="Top"/>
+            <Button Content="start" Height="20" Width="50" VerticalAlignment="Top" Command="{Binding ReadTextBox}"  IsEnabled="{Binding InputEnabled}"/>
+            <TextBlock Text="{Binding Error}" Width="160" Height="20" FontSize="8" TextAlignment="Center" VerticalAlignment="Center" Margin="10 0 10 0"/>
+        </StackPanel>
+        <Border BorderThickness="{Binding Border}" BorderBrush="DarkGreen" Height="{Binding Height}" Width="{Binding Width}" Margin="10">
+            <ItemsControl ItemsSource="{Binding Balls}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Canvas />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Ellipse Width= "{Binding Diameter}" Height="{Binding Diameter}" Fill="DarkMagenta" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+                <ItemsControl.ItemContainerStyle>
+                    <Style TargetType="ContentPresenter">
+                        <Setter Property="Canvas.Top" Value="{Binding Top}" />
+                        <Setter Property="Canvas.Left" Value="{Binding Left}" />
+                    </Style>
+                </ItemsControl.ItemContainerStyle>
+            </ItemsControl>
+        </Border>
     </Grid>
 </Window>
