@@ -69,7 +69,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
     {
         foreach (var ball in _balls)
         {
-            ball.dispose();
+            ball.Dispose();
         }
     }
 

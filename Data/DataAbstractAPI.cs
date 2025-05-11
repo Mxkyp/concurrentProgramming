@@ -59,6 +59,6 @@ namespace TP.ConcurrentProgramming.Data
 
     IVector Velocity { get; set; }
     IVector Position { get; set; }
-    public void dispose();
+    public void Dispose();
   }
 }

@@ -28,9 +28,9 @@ namespace TP.ConcurrentProgramming.BusinessLogic
       ball.NewPositionNotification += RaisePositionChangeEvent;
     }
 
-    public void dispose()
+    public void Dispose()
     {
-      _dataBall.dispose();
+      _dataBall.Dispose();
       _syncBarrier.RemoveParticipant();
     }
 
@@ -44,7 +44,6 @@ namespace TP.ConcurrentProgramming.BusinessLogic
 
     private Barrier _syncBarrier;    //private Vector Position;
     private static object lockObj = new object();
-    private static bool barrierUpdated = false;
     private void RaisePositionChangeEvent(object? sender, Data.IVector e)
     {
 

@@ -21,7 +21,7 @@ namespace TP.ConcurrentProgramming.Data
       Thread t = new Thread(new ThreadStart(MoveContinuously));
       t.Start();
     }
-    public void dispose()
+    public void Dispose()
     {
       disposed = true;
     }
