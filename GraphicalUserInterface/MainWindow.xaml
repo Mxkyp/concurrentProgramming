@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:TP.ConcurrentProgramming.Presentation.ViewModel;assembly=TP.ConcurrentProgramming.PresentationViewModel"
         mc:Ignorable="d"
-        Title="Presentation layer targeting reactive behaviour" Height="auto" Width="auto">
+        Title="Presentation layer targeting reactive behaviour" Height="{Binding WindowHeight}" Width="{Binding WindowWidth}">
     <Window.DataContext>
         <vm:MainWindowViewModel />
     </Window.DataContext>
@@ -20,7 +20,7 @@
             <Button FontSize="16" Content="start" Height="25" Width="50" VerticalAlignment="Top" Command="{Binding ReadTextBox}"  IsEnabled="{Binding InputEnabled}"/>
             <TextBlock Text="{Binding Error}" Width="240" Height="25" FontSize="12" TextAlignment="Center" VerticalAlignment="Center" Margin="10 0 10 0"/>
         </StackPanel>
-        <Border Grid.Row="1" BorderThickness="{Binding Border}" BorderBrush="DarkGreen" Height="{Binding Height}" Width="{Binding Width}" Margin="10">
+        <Border Grid.Row="1" BorderThickness="{Binding TableBorder}" BorderBrush="DarkGreen" Height="{Binding TableHeight}" Width="{Binding TableWidth}" Margin="10">
             <ItemsControl ItemsSource="{Binding Balls}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>

@@ -21,13 +21,15 @@ namespace TP.ConcurrentProgramming.Presentation.ViewModel
     #region ctor
 
     public MainWindowViewModel() : this(null)
-    { }
+    { 
+    }
 
     internal MainWindowViewModel(ModelAbstractApi modelLayerAPI)
     {
       ModelLayer = modelLayerAPI == null ? ModelAbstractApi.CreateModel() : modelLayerAPI;
       Observer = ModelLayer.Subscribe<ModelIBall>(x => Balls.Add(x));
     }
+
 
     #endregion ctor
 
@@ -37,8 +39,16 @@ namespace TP.ConcurrentProgramming.Presentation.ViewModel
     {
       if (Disposed)
         throw new ObjectDisposedException(nameof(MainWindowViewModel));
-      ModelLayer.Start(numberOfBalls, width, height, border);
+      ModelLayer.Start(numberOfBalls, tableWidth, tableHeight, tableBorder);
       Observer.Dispose();
+    }
+
+    public void initBindings(double screenWidth, double screenHeight) { 
+      this.WindowWidth = screenWidth / 1.5;
+      this.WindowHeight = screenHeight / 1.3;
+      this.TableWidth = screenWidth / 3;
+      this.TableHeight = screenHeight / 2;
+      this.TableBorder = 6;
     }
 
     public RelayCommand ReadTextBox => new RelayCommand(() => readTextBox());
@@ -55,39 +65,64 @@ namespace TP.ConcurrentProgramming.Presentation.ViewModel
             }
         }
     }
-    public double Height 
+    public double TableHeight 
     {
-        get => height;
-        set
+        get => tableHeight;
+        set 
         {
-            if (height != value)
+            if (tableHeight != value)
             {
-                height = value;
+                tableHeight = value;
                 RaisePropertyChanged();
             }
         }
     }
 
-    public double Width
+    public double TableWidth
     {
-        get => width;
-        set
+        get => tableWidth;
+        set 
         {
-            if (width != value)
+            if (tableWidth != value)
             {
-                width = value;
+                tableWidth = value;
                 RaisePropertyChanged();
             }
         }
     }
-    public double Border 
+    public double WindowHeight 
     {
-        get => border;
-        set
+        get => windowHeight;
+        set 
         {
-            if (border != value)
+            if (windowHeight != value)
             {
-                border = value;
+                windowHeight = value;
+                RaisePropertyChanged();
+            }
+        }
+    }
+
+    public double WindowWidth 
+    {
+        get => windowWidth;
+        set 
+        {
+            if (windowWidth != value)
+            {
+                windowWidth = value;
+                RaisePropertyChanged();
+            }
+        }
+    }
+    public double TableBorder 
+    {
+        get => tableBorder;
+        set 
+        {
+            if (tableBorder != value)
+            {
+                tableBorder = value;
                 RaisePropertyChanged();
             }
         }
@@ -174,9 +209,13 @@ namespace TP.ConcurrentProgramming.Presentation.ViewModel
     private ModelAbstractApi ModelLayer;
     private bool Disposed = false;
     private String _numberOfBalls = "5";
-    private double width;
-    private double height;
-    private double border;
+
+    private double windowWidth;
+    private double windowHeight;
+    private double tableWidth;
+    private double tableHeight;
+    private double tableBorder;
+
     private bool inputEnabled = true;
     private string error = "";
         private void readTextBox()

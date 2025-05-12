@@ -20,14 +20,12 @@ namespace TP.ConcurrentProgramming.PresentationView
   {
     public MainWindow()
     {
-      Random random = new Random();
       InitializeComponent();
       MainWindowViewModel viewModel = (MainWindowViewModel)DataContext;
+      // Get screen dimensions
       double screenWidth = SystemParameters.PrimaryScreenWidth;
       double screenHeight = SystemParameters.PrimaryScreenHeight;
-      viewModel.Width = screenWidth / 3;
-      viewModel.Height = screenHeight / 2;
-      viewModel.Border = 6;
+      viewModel.initBindings(screenWidth, screenHeight);
     }
 
     /// <summary>
