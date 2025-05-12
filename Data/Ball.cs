@@ -42,7 +42,7 @@ namespace TP.ConcurrentProgramming.Data
     #endregion IBall
 
     #region private
-    private bool disposed = false;
+    private volatile bool disposed = false;
 
     private void RaiseNewPositionChangeNotification()
     {

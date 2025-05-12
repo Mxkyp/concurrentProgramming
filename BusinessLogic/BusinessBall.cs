@@ -55,6 +55,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
         HandleWallCollision(e);
         NewPositionNotification?.Invoke(this, new Position(e.x, e.y));
       }
+      _syncBarrier.SignalAndWait();
     }
 
     private void HandleWallCollision(Data.IVector position)
