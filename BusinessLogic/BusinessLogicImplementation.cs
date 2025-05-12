@@ -51,7 +51,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
             var newBall = new Ball(databall, _balls, dimensions, barrier);
             _balls.Add(newBall); // Save it
             upperLayerHandler(new Position(startingPosition.x, startingPosition.y), newBall);
-        }, ballDia);
+        }, ballDia, width, height);
 
     }
 
