@@ -46,12 +46,12 @@ namespace TP.ConcurrentProgramming.BusinessLogic
         throw new ArgumentNullException(nameof(upperLayerHandler));
         dimensions = new Dimensions(ballDia, height, width, borderSize);
         barrier = new Barrier(numberOfBalls);
-        layerBellow.Start(numberOfBalls, (startingPosition, databall) =>
+        layerBellow.Start(numberOfBalls, (startingPosition, databall ) =>
         {
             var newBall = new Ball(databall, _balls, dimensions, barrier);
             _balls.Add(newBall); // Save it
             upperLayerHandler(new Position(startingPosition.x, startingPosition.y), newBall);
-        });
+        }, ballDia);
 
     }
 

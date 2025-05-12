@@ -14,10 +14,11 @@ namespace TP.ConcurrentProgramming.Data
   {
     #region ctor
 
-    internal Ball(Vector initialPosition, Vector initialVelocity)
+    internal Ball(Vector initialPosition, Vector initialVelocity, double Diameter)
     {
       Position = initialPosition;
       Velocity = initialVelocity;
+      this.Diameter = Diameter;
       Thread t = new Thread(new ThreadStart(MoveContinuously));
       t.Start();
     }
@@ -34,6 +35,9 @@ namespace TP.ConcurrentProgramming.Data
 
     public IVector Velocity { get; set; }
     public IVector Position{ get; set; }
+
+    public Double Mass { get => 1; } 
+    public Double Diameter { get; init; }
 
     #endregion IBall
 
