@@ -56,7 +56,7 @@ namespace TP.ConcurrentProgramming.Data
         while (!disposed)
         {
             Move();
-            Thread.Sleep(40);  // Adjust the interval (in milliseconds) as needed
+            Thread.Sleep(30);  // Adjust the interval (in milliseconds) as needed
         }
     }
 
