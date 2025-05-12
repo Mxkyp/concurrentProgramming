@@ -16,7 +16,6 @@ namespace TP.ConcurrentProgramming.BusinessLogic
 
     internal Ball(Data.IBall ball, List<Ball> OtherBalls, Dimensions dim, Barrier barrier)
     {
-      currentPosition = new Position(ball.Position.x, ball.Position.y);
       _syncBarrier = barrier;
       _dataBall = ball;
       otherBalls = OtherBalls;
@@ -39,7 +38,6 @@ namespace TP.ConcurrentProgramming.BusinessLogic
     #region private
 
     private Data.IBall _dataBall;
-    private Position currentPosition;
     private List<Ball> otherBalls;
     private Dimensions dim;
     private Barrier _syncBarrier;    //private Vector Position;
@@ -52,7 +50,6 @@ namespace TP.ConcurrentProgramming.BusinessLogic
       _syncBarrier.SignalAndWait();
       lock (lockObj)
       {
-        currentPosition = new Position(e.x, e.y);
         CheckCollisionsWithOtherBalls();
         NewPositionNotification?.Invoke(this, new Position(e.x, e.y));
       }
@@ -88,8 +85,8 @@ namespace TP.ConcurrentProgramming.BusinessLogic
       {
         if (other == this) continue; // Skip self
 
-        double dx = currentPosition.x - other._dataBall.Position.x;
-        double dy = currentPosition.y - other._dataBall.Position.y;
+        double dx = this._dataBall.Position.x - other._dataBall.Position.x;
+        double dy = this._dataBall.Position.y - other._dataBall.Position.y;
         double distance = Math.Sqrt(dx * dx + dy * dy);
 
         double collisionDistance = this._dataBall.Diameter; // Example: 10 radius per ball
@@ -105,8 +102,8 @@ namespace TP.ConcurrentProgramming.BusinessLogic
     private void HandleBallCollision(Ball other)
     {
       // Difference in positions
-      double dx = this.currentPosition.x - other._dataBall.Position.x;
-      double dy = this.currentPosition.y - other._dataBall.Position.y;
+      double dx = this._dataBall.Position.x - other._dataBall.Position.x;
+      double dy = this._dataBall.Position.y - other._dataBall.Position.y;
 
       // Distance squared (avoid sqrt for performance)
       double distanceSquared = dx * dx + dy * dy;
@@ -135,14 +132,14 @@ namespace TP.ConcurrentProgramming.BusinessLogic
       double m2 = other._dataBall.Mass;
 
       // Compute impulse scalar
-      double impulse = (2 * impactSpeed) / (m1 + m2);
+      double impulse = -(2 * impactSpeed) / (m1 + m2);
 
       // Update velocities (elastic collision with mass)
-      _dataBall.Velocity.x -= impulse * m2 * nx;
-      _dataBall.Velocity.y -= impulse * m2 * ny;
+      _dataBall.Velocity.x += impulse * m2 * nx;
+      _dataBall.Velocity.y += impulse * m2 * ny;
 
-      other._dataBall.Velocity.x += impulse * m1 * nx;
-      other._dataBall.Velocity.y += impulse * m1 * ny;
+      other._dataBall.Velocity.x -= impulse * m1 * nx;
+      other._dataBall.Velocity.y -= impulse * m1 * ny;
     }
 
 

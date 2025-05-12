@@ -18,21 +18,24 @@ namespace TP.ConcurrentProgramming.Data.Test
     {
       Vector testinVector = new Vector(0.0, 0.0);
       Ball newInstance = new(testinVector, testinVector, 10.0);
+      newInstance.Dispose();
     }
 
-    /*
     [TestMethod]
     public void MoveTestMethod()
     {
       Vector initialPosition = new(10.0, 10.0);
-      Ball newInstance = new(initialPosition, new Vector(0.0, 0.0));
+      Ball newInstance = new(initialPosition, new Vector(0.0, 0.0), 10.0);
       IVector curentPosition = new Vector(0.0, 0.0);
       int numberOfCallBackCalled = 0;
       newInstance.NewPositionNotification += (sender, position) => { Assert.IsNotNull(sender); curentPosition = position; numberOfCallBackCalled++; };
-      newInstance.Move(new Vector(0.0, 0.0));
-      Assert.AreEqual<int>(1, numberOfCallBackCalled);
+      while (numberOfCallBackCalled == 0)
+      {
+        Thread.Sleep(10);
+      }
+      Assert.IsTrue(numberOfCallBackCalled >= 1);
       Assert.AreEqual<IVector>(initialPosition, curentPosition);
+      newInstance.Dispose();
     }
-    */
   }
 }
