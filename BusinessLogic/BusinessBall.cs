@@ -89,7 +89,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
         double dy = this._dataBall.Position.y - other._dataBall.Position.y;
         double distance = Math.Sqrt(dx * dx + dy * dy);
 
-        double collisionDistance = this._dataBall.Diameter; // Example: 10 radius per ball
+        double collisionDistance = this._dataBall.Diameter; 
 
         if (distance <= collisionDistance)
         {
