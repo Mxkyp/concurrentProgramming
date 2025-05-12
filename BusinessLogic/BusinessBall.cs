@@ -24,7 +24,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
       ball.NewPositionNotification += RaisePositionChangeEvent;
     }
 
-    public void Dispose()
+    internal void Dispose()
     {
       _dataBall.Dispose();
       _syncBarrier.RemoveParticipant();
@@ -47,14 +47,13 @@ namespace TP.ConcurrentProgramming.BusinessLogic
     private void RaisePositionChangeEvent(object? sender, Data.IVector e)
     {
 
-      e.y = Math.Clamp(e.y, 0.0, dim.TableHeight - _dataBall.Diameter - 2 * dim.TableBorderSize);
-      e.x = Math.Clamp(e.x, 0.0, dim.TableWidth - _dataBall.Diameter - 2 * dim.TableBorderSize);
+      HandleWallCollision(e);
+
       _syncBarrier.SignalAndWait();
       lock (lockObj)
       {
         currentPosition = new Position(e.x, e.y);
         CheckCollisionsWithOtherBalls();
-        HandleWallCollision(e);
         NewPositionNotification?.Invoke(this, new Position(e.x, e.y));
       }
       _syncBarrier.SignalAndWait();
@@ -62,7 +61,6 @@ namespace TP.ConcurrentProgramming.BusinessLogic
 
     private void HandleWallCollision(Data.IVector position)
     {
-      bool bounced = false;
 
       // Check X bounds (0 to 400)
       if (position.x <= 0 || position.x >= dim.TableWidth - _dataBall.Diameter - 2 * dim.TableBorderSize)
@@ -70,7 +68,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
         // Reverse X velocity (elastic bounce)
         _dataBall.Velocity.x = -_dataBall.Velocity.x;
         _dataBall.Velocity.y =  _dataBall.Velocity.y;
-        bounced = true;
+        position.x = Math.Clamp(position.x, 0.0, dim.TableWidth - _dataBall.Diameter - 2 * dim.TableBorderSize);
       }
 
       // Check Y bounds (0 to 400)
@@ -79,7 +77,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
         // Reverse Y velocity (elastic bounce)
         _dataBall.Velocity.x = _dataBall.Velocity.x;
         _dataBall.Velocity.y = -_dataBall.Velocity.y;
-        bounced = true;
+        position.y = Math.Clamp(position.y, 0.0, dim.TableHeight - _dataBall.Diameter - 2 * dim.TableBorderSize);
       }
     }
 
