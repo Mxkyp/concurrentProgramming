@@ -47,6 +47,8 @@ namespace TP.ConcurrentProgramming.BusinessLogic
     private void RaisePositionChangeEvent(object? sender, Data.IVector e)
     {
 
+      e.y = Math.Clamp(e.y, 0.0, dim.TableHeight - _dataBall.Diameter - 2 * dim.TableBorderSize);
+      e.x = Math.Clamp(e.x, 0.0, dim.TableWidth - _dataBall.Diameter - 2 * dim.TableBorderSize);
       _syncBarrier.SignalAndWait();
       lock (lockObj)
       {
@@ -106,7 +108,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
     {
       // Difference in positions
       double dx = this.currentPosition.x - other._dataBall.Position.x;
-      double dy = currentPosition.y - other._dataBall.Position.y;
+      double dy = this.currentPosition.y - other._dataBall.Position.y;
 
       // Distance squared (avoid sqrt for performance)
       double distanceSquared = dx * dx + dy * dy;
@@ -119,27 +121,30 @@ namespace TP.ConcurrentProgramming.BusinessLogic
       double nx = dx / distance;
       double ny = dy / distance;
 
-      // Get relative velocity along the normal
+      // Relative velocity
       double dvx = _dataBall.Velocity.x - other._dataBall.Velocity.x;
       double dvy = _dataBall.Velocity.y - other._dataBall.Velocity.y;
 
-      // Dot product of relative velocity and the normal (impact speed)
+      // Dot product (impact speed along the normal)
       double impactSpeed = dvx * nx + dvy * ny;
 
-      // If the balls are moving away from each other (positive impact speed), no collision
+      // If moving away, no collision
       if (impactSpeed > 0)
         return;
 
-      // Apply impulse (elastic collision, equal mass)
-      double impulse = -impactSpeed;  // Impulse magnitude
+      // Masses of the balls
+      double m1 = _dataBall.Mass;
+      double m2 = other._dataBall.Mass;
 
-      // Update velocities based on the impulse
-      _dataBall.Velocity.x = _dataBall.Velocity.x+ impulse * nx;  // Velocity change for ball 1
-      _dataBall.Velocity.y = _dataBall.Velocity.y + impulse * ny;
-      
+      // Compute impulse scalar
+      double impulse = (2 * impactSpeed) / (m1 + m2);
 
-      other._dataBall.Velocity.x =  other._dataBall.Velocity.x - impulse * nx;  // Velocity change for ball 2
-      other._dataBall.Velocity.y = other._dataBall.Velocity.y - impulse * ny;
+      // Update velocities (elastic collision with mass)
+      _dataBall.Velocity.x -= impulse * m2 * nx;
+      _dataBall.Velocity.y -= impulse * m2 * ny;
+
+      other._dataBall.Velocity.x += impulse * m1 * nx;
+      other._dataBall.Velocity.y += impulse * m1 * ny;
     }
 
 

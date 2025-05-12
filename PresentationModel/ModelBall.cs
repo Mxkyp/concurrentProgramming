@@ -38,8 +38,6 @@ namespace TP.ConcurrentProgramming.Presentation.Model
       private set
       {
 
-        double maximumTop = CanvasHeight - Diameter - 2 * CanvasBorder;
-        value = Math.Clamp(value, 0.0, maximumTop);
         if (TopBackingField == value)
             return;
         TopBackingField = value;
@@ -52,8 +50,6 @@ namespace TP.ConcurrentProgramming.Presentation.Model
       get { return LeftBackingField; }
       private set
       {
-        double maximumLeft = CanvasWidth - Diameter - 2 * CanvasBorder;
-        value = Math.Clamp(value, 0.0, maximumLeft);
         if (LeftBackingField == value)
             return;
         LeftBackingField = value;
