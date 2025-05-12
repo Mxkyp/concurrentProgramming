@@ -67,7 +67,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic.Test
       public override void Dispose()
       { }
 
-      public override void Start(int numberOfBalls, Action<IVector, Data.IBall> upperLayerHandler)
+      public override void Start(int numberOfBalls, Action<IVector, Data.IBall> upperLayerHandler, double dia)
       {
         throw new NotImplementedException();
       }
@@ -82,7 +82,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic.Test
         Disposed = true;
       }
 
-      public override void Start(int numberOfBalls, Action<IVector, Data.IBall> upperLayerHandler)
+      public override void Start(int numberOfBalls, Action<IVector, Data.IBall> upperLayerHandler, double dia)
       {
         throw new NotImplementedException();
       }
@@ -96,7 +96,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic.Test
       public override void Dispose()
       { }
 
-      public override void Start(int numberOfBalls, Action<IVector, Data.IBall> upperLayerHandler)
+      public override void Start(int numberOfBalls, Action<IVector, Data.IBall> upperLayerHandler, double dia)
       {
         StartCalled = true;
         NumberOfBallseCreated = numberOfBalls;
@@ -129,6 +129,9 @@ namespace TP.ConcurrentProgramming.BusinessLogic.Test
 
       public Data.IVector Velocity { get; set; }
       public Data.IVector Position { get; set; }
+      
+      public Double Mass { get => 1; }
+      public Double Diameter { get; init; }
 
       public void start()
       {
