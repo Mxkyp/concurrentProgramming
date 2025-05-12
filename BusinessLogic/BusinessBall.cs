@@ -87,11 +87,11 @@ namespace TP.ConcurrentProgramming.BusinessLogic
       {
         if (other == this) continue; // Skip self
 
-        double dx = currentPosition.x - other.currentPosition.x;
-        double dy = currentPosition.y - other.currentPosition.y;
+        double dx = currentPosition.x - other._dataBall.Position.x;
+        double dy = currentPosition.y - other._dataBall.Position.y;
         double distance = Math.Sqrt(dx * dx + dy * dy);
 
-        double collisionDistance = dim.BallDimension; // Example: 10 radius per ball
+        double collisionDistance = this._dataBall.Diameter; // Example: 10 radius per ball
 
         if (distance <= collisionDistance)
         {
@@ -104,8 +104,8 @@ namespace TP.ConcurrentProgramming.BusinessLogic
     private void HandleBallCollision(Ball other)
     {
       // Difference in positions
-      double dx = this.currentPosition.x - other.currentPosition.x;
-      double dy = currentPosition.y - other.currentPosition.y;
+      double dx = this.currentPosition.x - other._dataBall.Position.x;
+      double dy = currentPosition.y - other._dataBall.Position.y;
 
       // Distance squared (avoid sqrt for performance)
       double distanceSquared = dx * dx + dy * dy;
