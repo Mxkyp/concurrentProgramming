@@ -19,12 +19,18 @@ namespace TP.ConcurrentProgramming.Data
       position = initialPosition;
       Velocity = initialVelocity;
       this.Diameter = Diameter;
+    }
+
+    public void Start()
+    {
       Thread t = new Thread(new ThreadStart(MoveContinuously));
       t.Start();
     }
-    public void Dispose()
+
+
+    public void Stop()
     {
-      disposed = true;
+      stopped = true;
     }
 
     #endregion ctor
@@ -33,7 +39,23 @@ namespace TP.ConcurrentProgramming.Data
 
     public event EventHandler<IVector>? NewPositionNotification;
 
-    public IVector Velocity { get; set; }
+    public IVector Velocity { 
+      get
+      {
+        lock (lockObj)
+        {
+          return velocity;
+        }
+      } 
+      set 
+      {
+        lock(lockObj)
+        {
+          velocity = (Vector) value; 
+        }
+      } 
+    }
+
     public IVector Position{ get => new Vector(position.x, position.y);  }
 
     public Double Mass { get => 1; } 
@@ -42,26 +64,29 @@ namespace TP.ConcurrentProgramming.Data
     #endregion IBall
 
     #region private
-    private volatile bool disposed = false;
+    private volatile bool stopped = false;
     private Vector position;
+    private static object lockObj = new object();
+    private Vector velocity;
 
     private void RaiseNewPositionChangeNotification()
     {
       NewPositionNotification?.Invoke(this, Position);
     }
 
-    private void Move()
+    private void Move(double sleepTime)
     {
-        position = new Vector(position.x + Velocity.x, position.y + Velocity.y);
+        position = new Vector(position.x + Velocity.x * sleepTime/1000, position.y + Velocity.y * sleepTime/1000);
         RaiseNewPositionChangeNotification();
     }
 
     private void MoveContinuously()
     {
-        while (!disposed)
+        while (!stopped)
         {
-            Move();
-            Thread.Sleep(30);  // Adjust the interval (in milliseconds) as needed
+            double sleepTime = 100 / (1 + Math.Sqrt(Velocity.x * Velocity.x + Velocity.y * Velocity.y)) + 5;
+            Move(sleepTime);
+            Thread.Sleep((int) sleepTime);  // Adjust the interval (in milliseconds) as needed
         }
     }
 

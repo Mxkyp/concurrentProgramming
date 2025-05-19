@@ -61,6 +61,7 @@ namespace TP.ConcurrentProgramming.Data
     Double Diameter { get; init; }
     IVector Velocity { get; set; }
     IVector Position { get; }
-    public void Dispose();
+    public void Start();
+    public void Stop();
   }
 }

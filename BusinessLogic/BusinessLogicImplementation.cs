@@ -45,13 +45,18 @@ namespace TP.ConcurrentProgramming.BusinessLogic
       if (upperLayerHandler == null)
         throw new ArgumentNullException(nameof(upperLayerHandler));
         dimensions = new Dimensions(ballDia, height, width, borderSize);
-        barrier = new Barrier(numberOfBalls);
         layerBellow.Start(numberOfBalls, (startingPosition, databall ) =>
         {
-            var newBall = new Ball(databall, _balls, dimensions, barrier);
+            var newBall = new Ball(databall, _balls, dimensions);
             _balls.Add(newBall); // Save it
             upperLayerHandler(new Position(startingPosition.x, startingPosition.y), newBall);
         }, ballDia, width, height);
+
+      foreach(var ball in _balls)
+      {
+        ball.Start();
+      }
+
 
     }
 
@@ -62,14 +67,13 @@ namespace TP.ConcurrentProgramming.BusinessLogic
     private bool Disposed = false;
     private List<Ball> _balls = new List<Ball>();
     private readonly UnderneathLayerAPI layerBellow;
-    private Barrier barrier;
     private Dimensions dimensions;
 
     private void KillBalls()
     {
         foreach (var ball in _balls)
         {
-            ball.Dispose();
+            ball.Stop();
         }
     }
 

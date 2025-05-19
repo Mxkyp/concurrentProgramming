@@ -14,19 +14,22 @@ namespace TP.ConcurrentProgramming.BusinessLogic
   internal class Ball : IBall
   {
 
-    internal Ball(Data.IBall ball, List<Ball> OtherBalls, Dimensions dim, Barrier barrier)
+    internal Ball(Data.IBall ball, List<Ball> OtherBalls, Dimensions dim)
     {
-      _syncBarrier = barrier;
       _dataBall = ball;
       otherBalls = OtherBalls;
       this.dim = dim;
       ball.NewPositionNotification += RaisePositionChangeEvent;
     }
 
-    internal void Dispose()
+    internal void Start()
     {
-      _dataBall.Dispose();
-      _syncBarrier.RemoveParticipant();
+      _dataBall.Start();
+    }
+
+    internal void Stop()
+    {
+      _dataBall.Stop();
     }
 
     #region IBall
@@ -40,7 +43,6 @@ namespace TP.ConcurrentProgramming.BusinessLogic
     private Data.IBall _dataBall;
     private List<Ball> otherBalls;
     private Dimensions dim;
-    private Barrier _syncBarrier;    //private Vector Position;
     private static object lockObj = new object();
     private void RaisePositionChangeEvent(object? sender, Data.IVector e)
     {
@@ -61,7 +63,6 @@ namespace TP.ConcurrentProgramming.BusinessLogic
         // Reverse X velocity (elastic bounce)
         _dataBall.Velocity.x = -_dataBall.Velocity.x;
         _dataBall.Velocity.y =  _dataBall.Velocity.y;
-        position.x = Math.Clamp(position.x, 0.0, dim.TableWidth - _dataBall.Diameter - 2 * dim.TableBorderSize);
       }
 
       // Check Y bounds (0 to 400)
@@ -70,7 +71,6 @@ namespace TP.ConcurrentProgramming.BusinessLogic
         // Reverse Y velocity (elastic bounce)
         _dataBall.Velocity.x = _dataBall.Velocity.x;
         _dataBall.Velocity.y = -_dataBall.Velocity.y;
-        position.y = Math.Clamp(position.y, 0.0, dim.TableHeight - _dataBall.Diameter - 2 * dim.TableBorderSize);
       }
     }
 
