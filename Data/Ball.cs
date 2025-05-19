@@ -16,7 +16,7 @@ namespace TP.ConcurrentProgramming.Data
 
     internal Ball(Vector initialPosition, Vector initialVelocity, double Diameter)
     {
-      Position = initialPosition;
+      position = initialPosition;
       Velocity = initialVelocity;
       this.Diameter = Diameter;
       Thread t = new Thread(new ThreadStart(MoveContinuously));
@@ -34,7 +34,7 @@ namespace TP.ConcurrentProgramming.Data
     public event EventHandler<IVector>? NewPositionNotification;
 
     public IVector Velocity { get; set; }
-    public IVector Position{ get; set; }
+    public IVector Position{ get => new Vector(position.x, position.y);  }
 
     public Double Mass { get => 1; } 
     public Double Diameter { get; init; }
@@ -43,6 +43,7 @@ namespace TP.ConcurrentProgramming.Data
 
     #region private
     private volatile bool disposed = false;
+    private Vector position;
 
     private void RaiseNewPositionChangeNotification()
     {
@@ -51,7 +52,7 @@ namespace TP.ConcurrentProgramming.Data
 
     private void Move()
     {
-        Position = new Vector(Position.x + Velocity.x, Position.y + Velocity.y);
+        position = new Vector(position.x + Velocity.x, position.y + Velocity.y);
         RaiseNewPositionChangeNotification();
     }
 

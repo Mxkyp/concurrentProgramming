@@ -60,7 +60,7 @@ namespace TP.ConcurrentProgramming.Data
     Double Mass { get; }
     Double Diameter { get; init; }
     IVector Velocity { get; set; }
-    IVector Position { get; set; }
+    IVector Position { get; }
     public void Dispose();
   }
 }

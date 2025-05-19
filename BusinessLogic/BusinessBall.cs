@@ -44,16 +44,12 @@ namespace TP.ConcurrentProgramming.BusinessLogic
     private static object lockObj = new object();
     private void RaisePositionChangeEvent(object? sender, Data.IVector e)
     {
-
-      HandleWallCollision(e);
-
-      _syncBarrier.SignalAndWait();
       lock (lockObj)
       {
+        HandleWallCollision(e);
         CheckCollisionsWithOtherBalls();
         NewPositionNotification?.Invoke(this, new Position(e.x, e.y));
       }
-      _syncBarrier.SignalAndWait();
     }
 
     private void HandleWallCollision(Data.IVector position)
