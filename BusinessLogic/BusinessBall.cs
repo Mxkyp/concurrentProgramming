@@ -14,10 +14,9 @@ namespace TP.ConcurrentProgramming.BusinessLogic
   internal class Ball : IBall
   {
 
-    internal Ball(Data.IBall ball, Dimensions dim)
+    internal Ball(Data.IBall ball)
     {
       _dataBall = ball;
-      this.dim = dim;
       ball.NewPositionNotification += RaisePositionChangeEvent;
     }
 
@@ -40,7 +39,6 @@ namespace TP.ConcurrentProgramming.BusinessLogic
     #region private
 
     private Data.IBall _dataBall;
-    private Dimensions dim;
     private void RaisePositionChangeEvent(object? sender, Data.IVector e)
     {
         HandleWallCollision(e);
@@ -52,7 +50,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
     {
 
       // Check X bounds (0 to 400)
-      if (position.x <= 0 || position.x >= dim.TableWidth - dim.BallDimension - 2 * dim.TableBorderSize)
+      if (position.x <= 0 || position.x >= BusinessLogicImplementation.dim.TableWidth - BusinessLogicImplementation.dim.BallDimension - 2 * BusinessLogicImplementation.dim.TableBorderSize)
       {
         // Reverse X velocity (elastic bounce)
         _dataBall.Velocity.x = -_dataBall.Velocity.x;
@@ -60,7 +58,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
       }
 
       // Check Y bounds (0 to 400)
-      if (position.y <= 0 || position.y >= dim.TableHeight - dim.BallDimension - 2 * dim.TableBorderSize)
+      if (position.y <= 0 || position.y >= BusinessLogicImplementation.dim.TableHeight - BusinessLogicImplementation.dim.BallDimension - 2 * BusinessLogicImplementation.dim.TableBorderSize)
       {
         // Reverse Y velocity (elastic bounce)
         _dataBall.Velocity.x = _dataBall.Velocity.x;
@@ -79,7 +77,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
         double dy = this._dataBall.Position.y - other._dataBall.Position.y;
         double distance = Math.Sqrt(dx * dx + dy * dy);
 
-        double collisionDistance = dim.BallDimension; 
+        double collisionDistance = BusinessLogicImplementation.dim.BallDimension; 
 
         if (distance <= collisionDistance)
         {
@@ -118,8 +116,8 @@ namespace TP.ConcurrentProgramming.BusinessLogic
         return;
 
       // Masses of the balls
-      double m1 = dim.ballMass;
-      double m2 = dim.ballMass;
+      double m1 = BusinessLogicImplementation.dim.ballMass;
+      double m2 = BusinessLogicImplementation.dim.ballMass;
 
       // Compute impulse scalar
       double impulse = -(2 * impactSpeed) / (m1 + m2);
