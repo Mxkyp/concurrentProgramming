@@ -52,7 +52,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
     {
 
       // Check X bounds (0 to 400)
-      if (position.x <= 0 || position.x >= dim.TableWidth - _dataBall.Diameter - 2 * dim.TableBorderSize)
+      if (position.x <= 0 || position.x >= dim.TableWidth - dim.BallDimension - 2 * dim.TableBorderSize)
       {
         // Reverse X velocity (elastic bounce)
         _dataBall.Velocity.x = -_dataBall.Velocity.x;
@@ -60,7 +60,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
       }
 
       // Check Y bounds (0 to 400)
-      if (position.y <= 0 || position.y >= dim.TableHeight - _dataBall.Diameter - 2 * dim.TableBorderSize)
+      if (position.y <= 0 || position.y >= dim.TableHeight - dim.BallDimension - 2 * dim.TableBorderSize)
       {
         // Reverse Y velocity (elastic bounce)
         _dataBall.Velocity.x = _dataBall.Velocity.x;
@@ -79,7 +79,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
         double dy = this._dataBall.Position.y - other._dataBall.Position.y;
         double distance = Math.Sqrt(dx * dx + dy * dy);
 
-        double collisionDistance = this._dataBall.Diameter; 
+        double collisionDistance = dim.BallDimension; 
 
         if (distance <= collisionDistance)
         {
@@ -118,8 +118,8 @@ namespace TP.ConcurrentProgramming.BusinessLogic
         return;
 
       // Masses of the balls
-      double m1 = _dataBall.Mass;
-      double m2 = other._dataBall.Mass;
+      double m1 = dim.ballMass;
+      double m2 = dim.ballMass;
 
       // Compute impulse scalar
       double impulse = -(2 * impactSpeed) / (m1 + m2);

@@ -56,9 +56,6 @@ namespace TP.ConcurrentProgramming.Data
   public interface IBall
   {
     event EventHandler<IVector> NewPositionNotification;
-
-    Double Mass { get; }
-    Double Diameter { get; init; }
     IVector Velocity { get; set; }
     IVector Position { get; }
     public void Start();

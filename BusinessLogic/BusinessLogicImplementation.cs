@@ -44,7 +44,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
         throw new ObjectDisposedException(nameof(BusinessLogicImplementation));
       if (upperLayerHandler == null)
         throw new ArgumentNullException(nameof(upperLayerHandler));
-        dimensions = new Dimensions(ballDia, height, width, borderSize);
+        dimensions = new Dimensions(ballDia, 1, height, width, borderSize);
         layerBellow.Start(numberOfBalls, (startingPosition, databall ) =>
         {
             var newBall = new Ball(databall, dimensions);
