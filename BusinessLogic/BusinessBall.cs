@@ -43,15 +43,11 @@ namespace TP.ConcurrentProgramming.BusinessLogic
     private Data.IBall _dataBall;
     private List<Ball> otherBalls;
     private Dimensions dim;
-    private static object lockObj = new object();
     private void RaisePositionChangeEvent(object? sender, Data.IVector e)
     {
-      lock (lockObj)
-      {
         HandleWallCollision(e);
         CheckCollisionsWithOtherBalls();
         NewPositionNotification?.Invoke(this, new Position(e.x, e.y));
-      }
     }
 
     private void HandleWallCollision(Data.IVector position)

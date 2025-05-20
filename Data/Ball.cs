@@ -42,17 +42,11 @@ namespace TP.ConcurrentProgramming.Data
     public IVector Velocity { 
       get
       {
-        lock (lockObj)
-        {
           return velocity;
-        }
       } 
       set 
       {
-        lock(lockObj)
-        {
           velocity = (Vector) value; 
-        }
       } 
     }
 
@@ -84,8 +78,13 @@ namespace TP.ConcurrentProgramming.Data
     {
         while (!stopped)
         {
-            double sleepTime = 100 / (1 + Math.Sqrt(Velocity.x * Velocity.x + Velocity.y * Velocity.y)) + 5;
-            Move(sleepTime);
+        double sleepTime;
+
+        lock (lockObj)
+        {
+          sleepTime = 100 / (1 + Math.Sqrt(Velocity.x * Velocity.x + Velocity.y * Velocity.y)) + 5;
+          Move(sleepTime);
+        }
             Thread.Sleep((int) sleepTime);  // Adjust the interval (in milliseconds) as needed
         }
     }
