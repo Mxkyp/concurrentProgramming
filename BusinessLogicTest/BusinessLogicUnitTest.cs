@@ -130,15 +130,12 @@ namespace TP.ConcurrentProgramming.BusinessLogic.Test
       public Data.IVector Velocity { get; set; }
       public Data.IVector Position { get; set; }
       
-      public Double Mass { get => 1; }
-      public Double Diameter { get; init; }
-
-      public void start()
+      public void Start()
       {
         Move();
       }
 
-      public void Dispose()
+      public void Stop()
       {
 
       }

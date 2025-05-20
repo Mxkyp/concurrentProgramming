@@ -29,6 +29,7 @@ namespace TP.ConcurrentProgramming.Data.Test
       IVector curentPosition = new Vector(0.0, 0.0);
       int numberOfCallBackCalled = 0;
       newInstance.NewPositionNotification += (sender, position) => { Assert.IsNotNull(sender); curentPosition = position; numberOfCallBackCalled++; };
+      newInstance.Start();
       while (numberOfCallBackCalled == 0)
       {
         Thread.Sleep(10);
