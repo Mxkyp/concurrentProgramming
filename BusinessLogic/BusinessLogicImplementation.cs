@@ -47,7 +47,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
         dimensions = new Dimensions(ballDia, height, width, borderSize);
         layerBellow.Start(numberOfBalls, (startingPosition, databall ) =>
         {
-            var newBall = new Ball(databall, _balls, dimensions);
+            var newBall = new Ball(databall, dimensions);
             _balls.Add(newBall); // Save it
             upperLayerHandler(new Position(startingPosition.x, startingPosition.y), newBall);
         }, ballDia, width, height);
@@ -65,7 +65,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
     #region private
 
     private bool Disposed = false;
-    private List<Ball> _balls = new List<Ball>();
+    internal static List<Ball> _balls = new List<Ball>();
     private readonly UnderneathLayerAPI layerBellow;
     private Dimensions dimensions;
 
