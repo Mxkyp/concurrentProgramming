@@ -41,8 +41,8 @@ namespace TP.ConcurrentProgramming.BusinessLogic
     private Data.IBall _dataBall;
     private void RaisePositionChangeEvent(object? sender, Data.IVector e)
     {
-        HandleWallCollision(e);
         CheckCollisionsWithOtherBalls();
+        HandleWallCollision(e);
         NewPositionNotification?.Invoke(this, new Position(e.x, e.y));
     }
 
