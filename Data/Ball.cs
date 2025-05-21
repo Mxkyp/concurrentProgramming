@@ -20,6 +20,10 @@ namespace TP.ConcurrentProgramming.Data
       Velocity = initialVelocity;
     }
 
+    #endregion ctor
+
+    #region IBall
+
     public void Start()
     {
       Thread t = new Thread(new ThreadStart(MoveContinuously));
@@ -31,10 +35,6 @@ namespace TP.ConcurrentProgramming.Data
     {
       stopped = true;
     }
-
-    #endregion ctor
-
-    #region IBall
 
     public event EventHandler<IVector>? NewPositionNotification;
 
@@ -56,7 +56,7 @@ namespace TP.ConcurrentProgramming.Data
     #region private
     private volatile bool stopped = false;
     private Vector position;
-    private static object lockObj = new object();
+    private static readonly object lockObj = new object();
     private Vector velocity;
 
     private void RaiseNewPositionChangeNotification()
@@ -81,7 +81,7 @@ namespace TP.ConcurrentProgramming.Data
           sleepTime = 100 / (1 + Math.Sqrt(Velocity.x * Velocity.x + Velocity.y * Velocity.y)) + 5;
           Move(sleepTime);
         }
-            Thread.Sleep((int) sleepTime);  // Adjust the interval (in milliseconds) as needed
+            Thread.Sleep((int) Math.Round(sleepTime));  
         }
     }
 
