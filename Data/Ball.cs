@@ -17,7 +17,7 @@ namespace TP.ConcurrentProgramming.Data
     internal Ball(Vector initialPosition, Vector initialVelocity)
     {
       position = initialPosition;
-      Velocity = initialVelocity;
+      velocity = initialVelocity;
     }
 
     #endregion ctor
@@ -69,11 +69,12 @@ namespace TP.ConcurrentProgramming.Data
     #endregion IBall
 
     #region private
+
     private volatile bool stopped = false;
     private Vector position;
+    private Vector velocity;
     private readonly object vlock = new object();
     private readonly object plock = new object();
-    private Vector velocity;
 
     private void RaiseNewPositionChangeNotification()
     {
