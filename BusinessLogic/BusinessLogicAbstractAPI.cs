@@ -23,7 +23,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
 
     #region Layer API
 
-    public static readonly Dimensions GetDimensions = new(10.0, 10.0, 10.0, 10.0, 10.0);
+    public static readonly Dimensions GetDimensions = new(10.0, 10.0, 10.0);
 
     public abstract void Start(int numberOfBalls, Action<IPosition, IBall> upperLayerHandler, double width, double height, double borderSize, double ballDia);
 
@@ -44,13 +44,13 @@ namespace TP.ConcurrentProgramming.BusinessLogic
   /// <summary>
   /// Immutable type representing table dimensions
   /// </summary>
-  /// <param name="BallDimension"></param>
   /// <param name="TableHeight"></param>
   /// <param name="TableWidth"></param>
+  /// <param name="TableBorderSize"></param>
   /// <remarks>
   /// Must be abstract
   /// </remarks>
-  public record Dimensions(double BallDimension, double ballMass, double TableHeight, double TableWidth, double TableBorderSize);
+  public record Dimensions(double TableHeight, double TableWidth, double TableBorderSize);
 
   public interface IPosition
   {

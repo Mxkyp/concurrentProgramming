@@ -14,10 +14,12 @@ namespace TP.ConcurrentProgramming.Data
   {
     #region ctor
 
-    internal Ball(Vector initialPosition, Vector initialVelocity)
+    internal Ball(Vector initialPosition, Vector initialVelocity, double mass, double diameter)
     {
       position = initialPosition;
       velocity = initialVelocity;
+      this.mass = mass;
+      this.diameter = diameter;
     }
 
     #endregion ctor
@@ -48,6 +50,17 @@ namespace TP.ConcurrentProgramming.Data
       } 
     }
 
+    public Double Mass
+    {
+      get { return mass; }
+      init { mass = value; }
+    }
+    public Double Diameter 
+    {
+      get { return diameter; }
+      init { mass = value; }
+    }
+
     public void setVelocity(double x, double y)
     {
       lock (vlock)
@@ -73,6 +86,8 @@ namespace TP.ConcurrentProgramming.Data
     private volatile bool stopped = false;
     private Vector position;
     private Vector velocity;
+    private readonly Double mass;
+    private readonly Double diameter;
     private readonly object vlock = new object();
     private readonly object plock = new object();
 

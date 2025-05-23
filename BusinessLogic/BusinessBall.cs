@@ -16,10 +16,11 @@ namespace TP.ConcurrentProgramming.BusinessLogic
   internal class Ball : IBall
   {
 
-    internal Ball(Data.IBall ball, List<Ball> ballsList)
+    internal Ball(Data.IBall ball, List<Ball> ballsList, Dimensions tableDim)
     {
       _dataBall = ball;
       _balls = ballsList;
+      dim = tableDim;
       ball.NewPositionNotification += RaisePositionChangeEvent;
     }
 
@@ -43,6 +44,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
 
     private Data.IBall _dataBall;
     private List<Ball> _balls;
+    private Dimensions dim;
     private void RaisePositionChangeEvent(object? sender, Data.IVector e)
     {
         CheckCollisionsWithOtherBalls(e);
@@ -57,7 +59,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
       double newXVel;
       double newYVel;
       // Check X bounds (0 to 400)
-      if (position.x <= 0 || position.x >= BusinessLogicImplementation.dim.TableWidth - BusinessLogicImplementation.dim.BallDimension - 2 * BusinessLogicImplementation.dim.TableBorderSize)
+      if (position.x <= 0 || position.x >= dim.TableWidth - _dataBall.Diameter - 2 * dim.TableBorderSize)
       {
         // Reverse X velocity (elastic bounce)
         newXVel = -currentVel.x;
@@ -66,7 +68,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
       }
 
       // Check Y bounds (0 to 400)
-      if (position.y <= 0 || position.y >= BusinessLogicImplementation.dim.TableHeight - BusinessLogicImplementation.dim.BallDimension - 2 * BusinessLogicImplementation.dim.TableBorderSize)
+      if (position.y <= 0 || position.y >= dim.TableHeight - _dataBall.Diameter - 2 * dim.TableBorderSize)
       {
         // Reverse Y velocity (elastic bounce)
         newXVel = currentVel.x;
@@ -89,7 +91,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
         double dy = myPosition.y - otherPostion.y;;
         double distance = Math.Sqrt(dx * dx + dy * dy);
 
-        double collisionDistance = BusinessLogicImplementation.dim.BallDimension; 
+        double collisionDistance = this._dataBall.Diameter/2 + other._dataBall.Diameter/2; 
 
         if (distance <= collisionDistance)
         {
@@ -122,8 +124,8 @@ namespace TP.ConcurrentProgramming.BusinessLogic
         return;
 
       // Masses of the balls
-      double m1 = BusinessLogicImplementation.dim.ballMass;
-      double m2 = BusinessLogicImplementation.dim.ballMass;
+      double m1 = _dataBall.Mass;
+      double m2 = other._dataBall.Mass;
 
       // Compute impulse scalar
       double impulse = -(2 * impactSpeed) / (m1 + m2);

@@ -44,10 +44,10 @@ namespace TP.ConcurrentProgramming.BusinessLogic
         throw new ObjectDisposedException(nameof(BusinessLogicImplementation));
       if (upperLayerHandler == null)
         throw new ArgumentNullException(nameof(upperLayerHandler));
-        dim = new Dimensions(ballDia, 1, height, width, borderSize);
+        tableDimensions = new Dimensions(height, width, borderSize);
         layerBellow.Start(numberOfBalls, (startingPosition, databall ) =>
         {
-            var newBall = new Ball(databall, _balls);
+            var newBall = new Ball(databall, _balls, tableDimensions);
             _balls.Add(newBall); // Save it
             upperLayerHandler(new Position(startingPosition.x, startingPosition.y), newBall);
         }, ballDia, width, height);
@@ -56,7 +56,6 @@ namespace TP.ConcurrentProgramming.BusinessLogic
       {
         ball.Start();
       }
-
 
     }
 
@@ -67,7 +66,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
     private bool Disposed = false;
     private List<Ball> _balls = new List<Ball>();
     private readonly UnderneathLayerAPI layerBellow;
-    internal static Dimensions dim;
+    private Dimensions tableDimensions;
 
     private void KillBalls()
     {
