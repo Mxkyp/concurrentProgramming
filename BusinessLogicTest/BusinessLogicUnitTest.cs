@@ -116,8 +116,8 @@ namespace TP.ConcurrentProgramming.BusinessLogic.Test
         x = 0; y = 0;
       }
 
-      public double x { get; set; }
-      public double y { get; set; }
+      public double x { get; init; }
+      public double y { get; init; }
     }
     private class DataBallFixture : Data.IBall
     {
@@ -125,11 +125,18 @@ namespace TP.ConcurrentProgramming.BusinessLogic.Test
       {
         Position = new DataVectorFixture(0, 0);
         Velocity = new DataVectorFixture(0, 0);
+        Mass = 1.0;
+        Diameter = 10.0;
       }
 
-      public Data.IVector Velocity { get; set; }
-      public Data.IVector Position { get; set; }
-      
+      public Data.IVector Velocity { get; }
+      public Data.IVector Position { get; }
+
+      public void setVelocity(double x, double y)
+      {
+      }
+      public Double Mass { get; init; }
+      public Double Diameter { get; init; }
       public void Start()
       {
         Move();
