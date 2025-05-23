@@ -41,22 +41,38 @@ namespace TP.ConcurrentProgramming.Data
     public IVector Velocity { 
       get
       {
+        lock (vlock)
+        {
           return velocity;
-      } 
-      set 
-      {
-          velocity = (Vector) value; 
+        }
       } 
     }
 
-    public IVector Position{ get => new Vector(position.x, position.y);  }
+    public void setVelocity(double x, double y)
+    {
+      lock (vlock)
+      {
+        velocity = new Vector(x, y);
+      }
+    }
+
+    public IVector Position{ 
+      get 
+      {
+        lock (plock)
+        {
+          return position;
+        }
+      } 
+    } 
 
     #endregion IBall
 
     #region private
     private volatile bool stopped = false;
     private Vector position;
-    private static readonly object lockObj = new object();
+    private readonly object vlock = new object();
+    private readonly object plock = new object();
     private Vector velocity;
 
     private void RaiseNewPositionChangeNotification()
@@ -64,9 +80,13 @@ namespace TP.ConcurrentProgramming.Data
       NewPositionNotification?.Invoke(this, Position);
     }
 
-    private void Move(double sleepTime)
+    private void Move(double sleepTime, IVector vel)
     {
-        position = new Vector(position.x + Velocity.x * sleepTime/1000, position.y + Velocity.y * sleepTime/1000);
+      IVector pos = Position;
+      lock (plock)
+      {
+        position = new Vector(pos.x + vel.x * sleepTime / 1000, pos.y + vel.y * sleepTime / 1000);
+      }
         RaiseNewPositionChangeNotification();
     }
 
@@ -74,14 +94,11 @@ namespace TP.ConcurrentProgramming.Data
     {
         while (!stopped)
         {
-        double sleepTime;
+          IVector vel = Velocity;
+          double sleepTime = 100 / (1 + Math.Sqrt(vel.x * vel.x + vel.y * vel.y)) + 5;
 
-        lock (lockObj)
-        {
-          sleepTime = 100 / (1 + Math.Sqrt(Velocity.x * Velocity.x + Velocity.y * Velocity.y)) + 5;
-          Move(sleepTime);
-        }
-            Thread.Sleep((int) Math.Round(sleepTime));  
+          Move(sleepTime, vel);
+          Thread.Sleep((int) Math.Round(sleepTime));  
         }
     }
 

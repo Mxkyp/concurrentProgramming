@@ -21,11 +21,11 @@ namespace TP.ConcurrentProgramming.Data
     /// <summary>
     /// The X component of the vector.
     /// </summary>
-    public double x { get; set; }
+    public double x { get; init; }
     /// <summary>
     /// The Y component of the vector.
     /// </summary>
-    public double y { get; set; }
+    public double y { get; init; }
 
     #endregion IVector
 

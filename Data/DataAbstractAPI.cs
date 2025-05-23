@@ -45,20 +45,21 @@ namespace TP.ConcurrentProgramming.Data
     /// <summary>
     /// The X component of the vector.
     /// </summary>
-    double x { get; set; }
+    double x { get; init; }
 
     /// <summary>
     /// The y component of the vector.
     /// </summary>
-    double y { get; set; }
+    double y { get; init; }
   }
 
   public interface IBall
   {
     event EventHandler<IVector> NewPositionNotification;
-    IVector Velocity { get; set; }
+    IVector Velocity { get; }
     IVector Position { get; }
-    public void Start();
-    public void Stop();
+    void setVelocity(double x, double y);
+    void Start();
+    void Stop();
   }
 }
