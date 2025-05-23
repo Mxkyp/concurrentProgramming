@@ -16,9 +16,10 @@ namespace TP.ConcurrentProgramming.BusinessLogic
   internal class Ball : IBall
   {
 
-    internal Ball(Data.IBall ball)
+    internal Ball(Data.IBall ball, List<Ball> ballsList)
     {
       _dataBall = ball;
+      _balls = ballsList;
       ball.NewPositionNotification += RaisePositionChangeEvent;
     }
 
@@ -41,6 +42,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
     #region private
 
     private Data.IBall _dataBall;
+    private List<Ball> _balls;
     private void RaisePositionChangeEvent(object? sender, Data.IVector e)
     {
         CheckCollisionsWithOtherBalls(e);
@@ -77,7 +79,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
 
     private void CheckCollisionsWithOtherBalls(Data.IVector myPosition)
     {
-      foreach (var other in BusinessLogicImplementation._balls)
+      foreach (var other in _balls)
       {
         if (other == this) continue; // Skip self
 
