@@ -16,11 +16,12 @@ namespace TP.ConcurrentProgramming.BusinessLogic
   internal class Ball : IBall
   {
 
-    internal Ball(Data.IBall ball, List<Ball> ballsList, Dimensions tableDim)
+    internal Ball(Data.IBall ball, List<Ball> ballsList, object lckObj, Dimensions tableDim)
     {
       _dataBall = ball;
       _balls = ballsList;
       dim = tableDim;
+      lockObj = lckObj;
       ball.NewPositionNotification += RaisePositionChangeEvent;
     }
 
@@ -44,6 +45,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
 
     private Data.IBall _dataBall;
     private List<Ball> _balls;
+    private readonly object lockObj;
     private Dimensions dim;
     private void RaisePositionChangeEvent(object? sender, Data.IVector e)
     {
@@ -55,50 +57,55 @@ namespace TP.ConcurrentProgramming.BusinessLogic
     private void HandleWallCollision(Data.IVector position)
     {
 
-      Data.IVector currentVel = _dataBall.Velocity;
-      double newXVel;
-      double newYVel;
-      // Check X bounds (0 to 400)
-      if (position.x <= 0 || position.x >= dim.TableWidth - _dataBall.Diameter - 2 * dim.TableBorderSize)
+      lock (lockObj)
       {
-        // Reverse X velocity (elastic bounce)
-        newXVel = -currentVel.x;
-        newYVel = currentVel.y; 
-        _dataBall.setVelocity(newXVel, newYVel);
-      }
+        Data.IVector currentVel = _dataBall.Velocity;
+        double newXVel;
+        double newYVel;
+        // Check X bounds (0 to 400)
+        if (position.x <= 0 || position.x >= dim.TableWidth - _dataBall.Diameter - 2 * dim.TableBorderSize)
+        {
+          // Reverse X velocity (elastic bounce)
+          newXVel = -currentVel.x;
+          newYVel = currentVel.y;
+          _dataBall.setVelocity(newXVel, newYVel);
+        }
 
-      // Check Y bounds (0 to 400)
-      if (position.y <= 0 || position.y >= dim.TableHeight - _dataBall.Diameter - 2 * dim.TableBorderSize)
-      {
-        // Reverse Y velocity (elastic bounce)
-        newXVel = currentVel.x;
-        newYVel = -currentVel.y; 
-        _dataBall.setVelocity(newXVel, newYVel);
+        // Check Y bounds (0 to 400)
+        if (position.y <= 0 || position.y >= dim.TableHeight - _dataBall.Diameter - 2 * dim.TableBorderSize)
+        {
+          // Reverse Y velocity (elastic bounce)
+          newXVel = currentVel.x;
+          newYVel = -currentVel.y;
+          _dataBall.setVelocity(newXVel, newYVel);
+        }
       }
-
     }
 
 
     private void CheckCollisionsWithOtherBalls(Data.IVector myPosition)
     {
-      foreach (var other in _balls)
+      lock (lockObj)
       {
-        if (other == this) continue; // Skip self
-
-        Data.IVector otherPostion = other._dataBall.Position;
-
-        double dx = myPosition.x - otherPostion.x;
-        double dy = myPosition.y - otherPostion.y;;
-        double distance = Math.Sqrt(dx * dx + dy * dy);
-
-        double collisionDistance = this._dataBall.Diameter/2 + other._dataBall.Diameter/2; 
-
-        if (distance <= collisionDistance)
+        foreach (var other in _balls)
         {
-          Data.IVector otherVel = other._dataBall.Velocity;
-          Data.IVector myVel = _dataBall.Velocity;
-          // Collision detected with 'other' ball
-          HandleBallCollision(other, distance, dx, dy, myVel, otherVel);
+          if (other == this) continue; // Skip self
+
+          Data.IVector otherPostion = other._dataBall.Position;
+
+          double dx = myPosition.x - otherPostion.x;
+          double dy = myPosition.y - otherPostion.y; ;
+          double distance = Math.Sqrt(dx * dx + dy * dy);
+
+          double collisionDistance = this._dataBall.Diameter / 2 + other._dataBall.Diameter / 2;
+
+          if (distance <= collisionDistance)
+          {
+            Data.IVector otherVel = other._dataBall.Velocity;
+            Data.IVector myVel = _dataBall.Velocity;
+            // Collision detected with 'other' ball
+            HandleBallCollision(other, distance, dx, dy, myVel, otherVel);
+          }
         }
       }
     }
