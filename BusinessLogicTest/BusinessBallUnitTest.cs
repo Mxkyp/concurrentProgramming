@@ -18,7 +18,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic.Test
     {
       DataBallFixture dataBallFixture = new DataBallFixture();
       List<Ball> balls = new List<Ball>();
-      Ball newInstance = new(dataBallFixture, balls, new Dimensions(400.0, 400.0, 5.0));
+      Ball newInstance = new(dataBallFixture, balls, new object(), new Dimensions(400.0, 400.0, 5.0));
       int numberOfCallBackCalled = 0;
       newInstance.NewPositionNotification += (sender, position) => { Assert.IsNotNull(sender); Assert.IsNotNull(position); numberOfCallBackCalled++; };
       dataBallFixture.Start();
