@@ -100,9 +100,14 @@ namespace TP.ConcurrentProgramming.Data
     {
       lock (plock)
       {
-        position = new Vector(position.x + vel.x * sleepTime / 1000, position.y + vel.y * sleepTime / 1000);
+        position = new Vector(position.x + vel.x * (sleepTime / 1000), position.y + vel.y * (sleepTime / 1000));
       }
         RaiseNewPositionChangeNotification();
+    }
+
+    private int CalculateRefresh(IVector velocity)
+    {
+          return (int) Math.Round(100 / (1 + Math.Sqrt(velocity.x * velocity.x + velocity.y * velocity.y)) + 5);
     }
 
     private void MoveContinuously()
@@ -110,10 +115,9 @@ namespace TP.ConcurrentProgramming.Data
         while (!stopped)
         {
           IVector vel = Velocity;
-          double sleepTime = 100 / (1 + Math.Sqrt(vel.x * vel.x + vel.y * vel.y)) + 5;
-
-          Move(sleepTime, vel);
-          Thread.Sleep((int) Math.Round(sleepTime));  
+          int dtime  = CalculateRefresh(vel);
+          Move(dtime, vel);
+          Thread.Sleep(dtime);  
         }
     }
 
