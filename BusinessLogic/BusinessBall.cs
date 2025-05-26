@@ -11,6 +11,7 @@
 
 
 
+
 namespace TP.ConcurrentProgramming.BusinessLogic
 {
   internal class Ball : IBall
@@ -49,9 +50,10 @@ namespace TP.ConcurrentProgramming.BusinessLogic
     private Dimensions dim;
     private void RaisePositionChangeEvent(object? sender, Data.IVector e)
     {
-        CheckCollisionsWithOtherBalls(e);
-        HandleWallCollision(e);
-        NewPositionNotification?.Invoke(this, new Position(e.x, e.y));
+        Data.IVector newPosition = e;
+        CheckCollisionsWithOtherBalls(newPosition);
+        HandleWallCollision(newPosition);
+        NewPositionNotification?.Invoke(this, new Position(newPosition.x, newPosition.y));
     }
 
     private void HandleWallCollision(Data.IVector position)
@@ -62,7 +64,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
         Data.IVector currentVel = _dataBall.Velocity;
         double newXVel;
         double newYVel;
-        // Check X bounds (0 to 400)
+
         if (position.x <= 0 || position.x >= dim.TableWidth - _dataBall.Diameter - 2 * dim.TableBorderSize)
         {
           // Reverse X velocity (elastic bounce)
@@ -71,7 +73,6 @@ namespace TP.ConcurrentProgramming.BusinessLogic
           _dataBall.setVelocity(newXVel, newYVel);
         }
 
-        // Check Y bounds (0 to 400)
         if (position.y <= 0 || position.y >= dim.TableHeight - _dataBall.Diameter - 2 * dim.TableBorderSize)
         {
           // Reverse Y velocity (elastic bounce)
