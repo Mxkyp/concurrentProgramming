@@ -86,6 +86,8 @@ namespace TP.ConcurrentProgramming.BusinessLogic
 
     private void CheckCollisionsWithOtherBalls(Data.IVector myPosition)
     {
+      lock (lockObj)
+      {
         foreach (var other in _balls)
         {
           if (other == this) continue; // Skip self
@@ -103,12 +105,11 @@ namespace TP.ConcurrentProgramming.BusinessLogic
             HandleBallCollision(other, distance, dx, dy);
           }
         }
+      }
     }
 
     private void HandleBallCollision(Ball other, double distance, double dx, double dy)
     {
-      lock (lockObj)
-      {
         Data.IVector otherVelocity = other._dataBall.Velocity;
         Data.IVector myVelocity = _dataBall.Velocity;
         if (distance == 0)
@@ -145,7 +146,6 @@ namespace TP.ConcurrentProgramming.BusinessLogic
 
         _dataBall.setVelocity(newXVel, newYVel);
         other._dataBall.setVelocity(newOtherXVel, newOtherYVel);
-      }
     }
 
 
