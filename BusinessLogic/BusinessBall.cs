@@ -58,7 +58,6 @@ namespace TP.ConcurrentProgramming.BusinessLogic
 
     private void HandleWallCollision(Data.IVector position)
     {
-
       lock (lockObj)
       {
         Data.IVector currentVel = _dataBall.Velocity;
