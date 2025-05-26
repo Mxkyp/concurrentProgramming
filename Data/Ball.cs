@@ -98,10 +98,9 @@ namespace TP.ConcurrentProgramming.Data
 
     private void Move(double sleepTime, IVector vel)
     {
-      IVector pos = Position;
       lock (plock)
       {
-        position = new Vector(pos.x + vel.x * sleepTime / 1000, pos.y + vel.y * sleepTime / 1000);
+        position = new Vector(position.x + vel.x * sleepTime / 1000, position.y + vel.y * sleepTime / 1000);
       }
         RaiseNewPositionChangeNotification();
     }
