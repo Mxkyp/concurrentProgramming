@@ -96,13 +96,13 @@ namespace TP.ConcurrentProgramming.Data
       NewPositionNotification?.Invoke(this, Position);
     }
 
-    private void Move(double sleepTime, IVector vel)
+    private void Move(double time, IVector vel)
     {
       lock (plock)
       {
-        position = new Vector(position.x + vel.x * (sleepTime / 1000), position.y + vel.y * (sleepTime / 1000));
+        position = new Vector(position.x + vel.x * (time / 1000), position.y + vel.y * (time / 1000));
       }
-      DataAbstractAPI.logger.Log($"Ball moved to {position.x:F2},{position.y:F2} with velocity {vel.x:F2},{vel.y:F2}");
+      DataAbstractAPI.logger.Log(Thread.CurrentThread.ManagedThreadId, $"Ball moved", position, velocity);
       RaiseNewPositionChangeNotification();
     }
 
