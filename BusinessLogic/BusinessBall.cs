@@ -22,6 +22,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
       _dataBall = ball;
       _balls = ballsList;
       lockObj = lckObj;
+      currentPosition = ball.Position;
       dim = tableDim;
       ball.NewPositionNotification += RaisePositionChangeEvent;
     }
@@ -47,16 +48,17 @@ namespace TP.ConcurrentProgramming.BusinessLogic
     private Data.IBall _dataBall;
     private List<Ball> _balls;
     private readonly object lockObj;
+    private Data.IVector currentPosition;
     private Dimensions dim;
     private void RaisePositionChangeEvent(object? sender, Data.IVector e)
     {
-        Data.IVector newPosition = e;
-        CheckCollisionsWithOtherBalls(newPosition);
-        HandleWallCollision(newPosition);
-        NewPositionNotification?.Invoke(this, new Position(newPosition.x, newPosition.y));
+        currentPosition = e;
+        CheckCollisionsWithOtherBalls();
+        HandleWallCollision();
+        NewPositionNotification?.Invoke(this, new Position(currentPosition.x, currentPosition.y));
     }
 
-    private void HandleWallCollision(Data.IVector position)
+    private void HandleWallCollision()
     {
       lock (lockObj)
       {
@@ -64,16 +66,19 @@ namespace TP.ConcurrentProgramming.BusinessLogic
         double newXVel;
         double newYVel;
 
-        if (position.x <= 0 || position.x >= dim.TableWidth - _dataBall.Diameter - 2 * dim.TableBorderSize)
+        if (currentPosition.x <= 0 || currentPosition.x >= dim.TableWidth - _dataBall.Diameter - 2 * dim.TableBorderSize)
         {
+
+          Data.DataAbstractAPI.logger.Log(Thread.CurrentThread.ManagedThreadId, "COLIDED with vertical wall", currentPosition, currentVel);
           // Reverse X velocity (elastic bounce)
           newXVel = -currentVel.x;
           newYVel = currentVel.y;
           _dataBall.setVelocity(newXVel, newYVel);
         }
 
-        if (position.y <= 0 || position.y >= dim.TableHeight - _dataBall.Diameter - 2 * dim.TableBorderSize)
+        if (currentPosition.y <= 0 || currentPosition.y >= dim.TableHeight - _dataBall.Diameter - 2 * dim.TableBorderSize)
         {
+          Data.DataAbstractAPI.logger.Log(Thread.CurrentThread.ManagedThreadId, "COLIDED with horizontal wall", currentPosition, currentVel);
           // Reverse Y velocity (elastic bounce)
           newXVel = currentVel.x;
           newYVel = -currentVel.y;
@@ -83,7 +88,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
     }
 
 
-    private void CheckCollisionsWithOtherBalls(Data.IVector myPosition)
+    private void CheckCollisionsWithOtherBalls()
     {
       lock (lockObj)
       {
@@ -91,26 +96,28 @@ namespace TP.ConcurrentProgramming.BusinessLogic
         {
           if (other == this) continue; // Skip self
 
-          Data.IVector otherPostion = other._dataBall.Position;
-
-          double dx = myPosition.x - otherPostion.x;
-          double dy = myPosition.y - otherPostion.y; ;
+          Data.IVector otherPostion = other.currentPosition;
+          double dx = currentPosition.x - otherPostion.x;
+          double dy = currentPosition.y - otherPostion.y; ;
           double distance = Math.Sqrt(dx * dx + dy * dy);
 
           double collisionDistance = this._dataBall.Diameter / 2 + other._dataBall.Diameter / 2;
 
           if (distance <= collisionDistance)
           {
-            HandleBallCollision(other, distance, dx, dy);
+            HandleBallCollision(other, distance, dx, dy, otherPostion);
           }
         }
       }
     }
 
-    private void HandleBallCollision(Ball other, double distance, double dx, double dy)
+    private void HandleBallCollision(Ball other, double distance, double dx, double dy, Data.IVector otherPos)
     {
         Data.IVector otherVelocity = other._dataBall.Velocity;
         Data.IVector myVelocity = _dataBall.Velocity;
+
+        Data.DataAbstractAPI.logger.Log(Thread.CurrentThread.ManagedThreadId, $"COLIDED with {otherPos.x:F2},{otherPos.y:F2} with velocity {otherVelocity.x:F2},{otherVelocity.y:F2}", currentPosition, myVelocity);
+
         if (distance == 0)
           return; // Prevent division by zero (balls perfectly overlapping)
 
