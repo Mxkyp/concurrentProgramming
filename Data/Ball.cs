@@ -112,12 +112,23 @@ namespace TP.ConcurrentProgramming.Data
 
     private void MoveContinuously()
     {
-        while (!stopped)
+      var stopwatch = new System.Diagnostics.Stopwatch();
+      stopwatch.Start();
+
+      long lastUpdate = stopwatch.ElapsedMilliseconds;
+
+
+      while (!stopped)
         {
-          IVector vel = Velocity;
-          int dtime  = CalculateRefresh(vel);
-          Move(dtime, vel);
-          Thread.Sleep(dtime);  
+        long now = stopwatch.ElapsedMilliseconds;
+        double deltaTime = (now - lastUpdate); // miliseconds
+        lastUpdate = now;
+
+        IVector vel = Velocity;
+        Move(deltaTime, vel);
+
+        int refreshTime = CalculateRefresh(vel);
+        Thread.Sleep(refreshTime);  
         }
     }
 
