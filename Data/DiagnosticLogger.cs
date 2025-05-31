@@ -4,12 +4,13 @@
   {
     private readonly DiagnosticBuffer buffer;
     private readonly Thread writerThread;
-    private readonly string filePath = "./diagnostic.log";
-    internal DiagnosticLogger(string filePath = "./diagnostic.log", int bufferCapacity = 100)
+    private readonly string filePath;
+    internal DiagnosticLogger(string relativePath = @"..\..\..\..\logs\diagnostic.log", int bufferCapacity = 100)
     {
-      this.filePath = filePath;
-      buffer = new DiagnosticBuffer(bufferCapacity);
+      filePath = Path.GetFullPath(relativePath); // resolves relative path correctly
+      Directory.CreateDirectory(Path.GetDirectoryName(filePath)!); // ensures logs/ exists
 
+      buffer = new DiagnosticBuffer(bufferCapacity);
       writerThread = new Thread(WriteLoop)
       {
         IsBackground = true
