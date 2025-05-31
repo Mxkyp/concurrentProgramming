@@ -102,7 +102,8 @@ namespace TP.ConcurrentProgramming.Data
       {
         position = new Vector(position.x + vel.x * (sleepTime / 1000), position.y + vel.y * (sleepTime / 1000));
       }
-        RaiseNewPositionChangeNotification();
+      DataAbstractAPI.logger.Log($"Ball moved to {position.x:F2},{position.y:F2} with velocity {vel.x:F2},{vel.y:F2}");
+      RaiseNewPositionChangeNotification();
     }
 
     private int CalculateRefresh(IVector velocity)

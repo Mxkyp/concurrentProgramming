@@ -24,7 +24,7 @@ namespace TP.ConcurrentProgramming.Data
     #region public API
 
     public abstract void Start(int numberOfBalls, Action<IVector, IBall> upperLayerHandler, double ballDiameter, double tableWidth, double tableHeight);
-
+    public static ILogger logger = new DiagnosticLogger();
     #endregion public API
 
     #region IDisposable
@@ -63,5 +63,10 @@ namespace TP.ConcurrentProgramming.Data
     void setVelocity(double x, double y);
     void Start();
     void Stop();
+  }
+
+  public interface ILogger
+  {
+    public void Log(string message);
   }
 }
