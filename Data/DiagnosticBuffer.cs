@@ -4,47 +4,32 @@ namespace TP.ConcurrentProgramming.Data
 {
   internal class DiagnosticBuffer
   {
-    private readonly ConcurrentQueue<string> buffer = new ConcurrentQueue<string>();
-    private readonly int capacity;
-    private readonly object lockObj = new object();
-    private bool dataAvailable = false;
+    private readonly BlockingCollection<string> buffer;
 
     internal DiagnosticBuffer(int capacity)
     {
-      this.capacity = capacity;
+      buffer = new BlockingCollection<string>(capacity);
     }
 
     internal bool TryAdd(string data)
     {
-      lock (lockObj)
-      {
-        if (buffer.Count >= capacity)
-          return false;
-
-        buffer.Enqueue(data);
-        dataAvailable = true;
-        Monitor.Pulse(lockObj); // wake up logger thread
-        return true;
-      }
+      return buffer.TryAdd(data, 0);
     }
 
     internal string? WaitAndTake()
     {
-      lock (lockObj)
+     
+      while(buffer.Count == 0)
       {
-        while (buffer.Count == 0)
-        {
-          dataAvailable = false;
-          Monitor.Wait(lockObj); // wait until new data arrives
-        }
+          Thread.Sleep(20);
+      }
 
-        if(!buffer.TryDequeue(out string logData1))
-        {
-          throw new Exception("reading should be deterministiic");
-        }
+      if(!buffer.TryTake(out string logData1))
+      {
+        throw new Exception("reading should be deterministic");
+      }
 
         return logData1;
-      }
     }
   }
 }
