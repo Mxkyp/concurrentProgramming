@@ -9,12 +9,12 @@ namespace TP.ConcurrentProgramming.Data
     private readonly object lockObj = new object();
     private bool dataAvailable = false;
 
-    public DiagnosticBuffer(int capacity)
+    internal DiagnosticBuffer(int capacity)
     {
       this.capacity = capacity;
     }
 
-    public bool TryAdd(string data)
+    internal bool TryAdd(string data)
     {
       lock (lockObj)
       {
@@ -28,7 +28,7 @@ namespace TP.ConcurrentProgramming.Data
       }
     }
 
-    public string? WaitAndTake()
+    internal string? WaitAndTake()
     {
       lock (lockObj)
       {
