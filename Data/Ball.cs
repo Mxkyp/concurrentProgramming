@@ -69,16 +69,6 @@ namespace TP.ConcurrentProgramming.Data
       }
     }
 
-    public IVector Position{ 
-      get 
-      {
-        lock (plock)
-        {
-          return position;
-        }
-      } 
-    } 
-
     #endregion IBall
 
     #region private
@@ -93,7 +83,7 @@ namespace TP.ConcurrentProgramming.Data
 
     private void RaiseNewPositionChangeNotification()
     {
-      NewPositionNotification?.Invoke(this, Position);
+      NewPositionNotification?.Invoke(this, position);
     }
 
     private void Move(double time, IVector vel)

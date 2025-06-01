@@ -18,12 +18,12 @@ namespace TP.ConcurrentProgramming.BusinessLogic
   internal class Ball : IBall
   {
 
-    internal Ball(Data.IBall ball, List<Ball> ballsList, object lckObj, Dimensions tableDim, Data.ILogger logger)
+    internal Ball(Data.IBall ball, List<Ball> ballsList, object lckObj, Dimensions tableDim, Data.IVector startingPosition, Data.ILogger logger)
     {
       _dataBall = ball;
       _balls = ballsList;
       lockObj = lckObj;
-      currentPosition = ball.Position;
+      currentPosition = startingPosition;
       dim = tableDim;
       ball.NewPositionNotification += RaisePositionChangeEvent;
       this.logger = logger;

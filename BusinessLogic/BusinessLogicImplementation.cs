@@ -48,7 +48,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
         logger = layerBellow.GetLogger();
         layerBellow.Start(numberOfBalls, (startingPosition, databall ) =>
         {
-            var newBall = new Ball(databall, _balls, lckObj, tableDimensions, logger);
+            var newBall = new Ball(databall, _balls, lckObj, tableDimensions, startingPosition, logger);
             _balls.Add(newBall); // Save it
             upperLayerHandler(new Position(startingPosition.x, startingPosition.y), newBall);
         }, ballDia, width, height);
