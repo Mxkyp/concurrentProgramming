@@ -111,6 +111,11 @@ namespace TP.ConcurrentProgramming.Data
         double deltaTime = (now - lastUpdate); // miliseconds
         lastUpdate = now;
 
+        if(deltaTime > 1000)
+        {
+          throw new Exception("shouldnt happen");
+        }
+
         IVector vel = Velocity;
         Move(deltaTime, vel);
 

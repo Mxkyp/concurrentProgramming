@@ -70,6 +70,11 @@ namespace TP.ConcurrentProgramming.BusinessLogic.Test
       {
         throw new NotImplementedException();
       }
+
+      public override Data.ILogger GetLogger()
+      {
+        throw new NotImplementedException();
+      }
     }
 
     private class DataLayerDisposeFixcure : Data.DataAbstractAPI
@@ -82,6 +87,11 @@ namespace TP.ConcurrentProgramming.BusinessLogic.Test
       }
 
       public override void Start(int numberOfBalls, Action<Data.IVector, Data.IBall> upperLayerHandler, double diameter, double tableWidth, double tableHeight)
+      {
+        throw new NotImplementedException();
+      }
+
+      public override Data.ILogger GetLogger()
       {
         throw new NotImplementedException();
       }
@@ -101,7 +111,17 @@ namespace TP.ConcurrentProgramming.BusinessLogic.Test
         NumberOfBallseCreated = numberOfBalls;
         upperLayerHandler(new DataVectorFixture(), new DataBallFixture());
       }
+      public override Data.ILogger GetLogger()
+      {
+        return new LoggerFixture();
+      }
 
+      private class LoggerFixture : Data.ILogger {
+        public void Log(int threadId, string message, Data.IVector position, Data.IVector velocity)
+        {
+
+        }
+      }
 
     }
     private record DataVectorFixture : Data.IVector

@@ -17,8 +17,9 @@ namespace TP.ConcurrentProgramming.BusinessLogic.Test
     public void MoveTestMethod()
     {
       DataBallFixture dataBallFixture = new DataBallFixture();
+      DataLayerFixcure layerBellow = new DataLayerFixcure();
       List<Ball> balls = new List<Ball>();
-      Ball newInstance = new(dataBallFixture, balls, new object(), new Dimensions(400.0, 400.0, 5.0));
+      Ball newInstance = new(dataBallFixture, balls, new object(), new Dimensions(400.0, 400.0, 5.0), dataBallFixture.Position, layerBellow.GetLogger());
       int numberOfCallBackCalled = 0;
       newInstance.NewPositionNotification += (sender, position) => { Assert.IsNotNull(sender); Assert.IsNotNull(position); numberOfCallBackCalled++; };
       dataBallFixture.Start();
@@ -33,6 +34,9 @@ namespace TP.ConcurrentProgramming.BusinessLogic.Test
         Position = new VectorFixture(0, 0);
         Velocity = new VectorFixture(0, 0);
       }
+
+      private VectorFixture position;
+      private VectorFixture velocity;
       public Data.IVector Velocity { get; }
       public Data.IVector Position { get; }
 
@@ -70,6 +74,30 @@ namespace TP.ConcurrentProgramming.BusinessLogic.Test
     }
 
     }
+
+    private class DataLayerFixcure : Data.DataAbstractAPI
+    {
+      public override void Dispose()
+      { }
+
+      public override void Start(int numberOfBalls, Action<Data.IVector, Data.IBall> upperLayerHandler, double diameter, double tableWidth, double tableHeight)
+      {
+        throw new NotImplementedException();
+      }
+      public override Data.ILogger GetLogger()
+      {
+        return new LoggerFixture();
+      }
+
+      private class LoggerFixture : Data.ILogger {
+        public void Log(int threadId, string message, Data.IVector position, Data.IVector velocity)
+        {
+
+        }
+      }
+    }
+
+    
     #endregion testing instrumentation
   }
 }
