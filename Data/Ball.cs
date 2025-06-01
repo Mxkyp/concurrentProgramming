@@ -102,7 +102,6 @@ namespace TP.ConcurrentProgramming.Data
       {
         position = new Vector(position.x + vel.x * (time / 1000), position.y + vel.y * (time / 1000));
       }
-      DataAbstractAPI.logger.Log(Thread.CurrentThread.ManagedThreadId, $"Ball moved", position, velocity);
       RaiseNewPositionChangeNotification();
     }
 

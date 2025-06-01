@@ -24,7 +24,7 @@ namespace TP.ConcurrentProgramming.Data
     #region public API
 
     public abstract void Start(int numberOfBalls, Action<IVector, IBall> upperLayerHandler, double ballDiameter, double tableWidth, double tableHeight);
-    public static readonly ILogger logger = new DiagnosticLogger();
+    public abstract ILogger GetLogger(); 
 
     #endregion public API
 

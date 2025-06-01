@@ -12,12 +12,13 @@
 
 
 
+
 namespace TP.ConcurrentProgramming.BusinessLogic
 {
   internal class Ball : IBall
   {
 
-    internal Ball(Data.IBall ball, List<Ball> ballsList, object lckObj, Dimensions tableDim)
+    internal Ball(Data.IBall ball, List<Ball> ballsList, object lckObj, Dimensions tableDim, Data.ILogger logger)
     {
       _dataBall = ball;
       _balls = ballsList;
@@ -25,6 +26,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
       currentPosition = ball.Position;
       dim = tableDim;
       ball.NewPositionNotification += RaisePositionChangeEvent;
+      this.logger = logger;
     }
 
     internal void Start()
@@ -50,6 +52,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
     private readonly object lockObj;
     private Data.IVector currentPosition;
     private Dimensions dim;
+    private Data.ILogger logger;
     private void RaisePositionChangeEvent(object? sender, Data.IVector e)
     {
         currentPosition = e;
@@ -69,7 +72,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
         if (currentPosition.x <= 0 || currentPosition.x >= dim.TableWidth - _dataBall.Diameter - 2 * dim.TableBorderSize)
         {
 
-          Data.DataAbstractAPI.logger.Log(Thread.CurrentThread.ManagedThreadId, "COLIDED with vertical wall", currentPosition, currentVel);
+          logger.Log(Thread.CurrentThread.ManagedThreadId, "COLIDED with vertical wall", currentPosition, currentVel);
           // Reverse X velocity (elastic bounce)
           newXVel = -currentVel.x;
           newYVel = currentVel.y;
@@ -78,7 +81,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
 
         if (currentPosition.y <= 0 || currentPosition.y >= dim.TableHeight - _dataBall.Diameter - 2 * dim.TableBorderSize)
         {
-          Data.DataAbstractAPI.logger.Log(Thread.CurrentThread.ManagedThreadId, "COLIDED with horizontal wall", currentPosition, currentVel);
+          logger.Log(Thread.CurrentThread.ManagedThreadId, "COLIDED with horizontal wall", currentPosition, currentVel);
           // Reverse Y velocity (elastic bounce)
           newXVel = currentVel.x;
           newYVel = -currentVel.y;
@@ -116,7 +119,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
         Data.IVector otherVelocity = other._dataBall.Velocity;
         Data.IVector myVelocity = _dataBall.Velocity;
 
-        Data.DataAbstractAPI.logger.Log(Thread.CurrentThread.ManagedThreadId, $"COLIDED with {otherPos.x:F2},{otherPos.y:F2} with velocity {otherVelocity.x:F2},{otherVelocity.y:F2}", currentPosition, myVelocity);
+        logger.Log(Thread.CurrentThread.ManagedThreadId, $"COLIDED with {otherPos.x:F2},{otherPos.y:F2} with velocity {otherVelocity.x:F2},{otherVelocity.y:F2}", currentPosition, myVelocity);
 
         if (distance == 0)
           return; // Prevent division by zero (balls perfectly overlapping)

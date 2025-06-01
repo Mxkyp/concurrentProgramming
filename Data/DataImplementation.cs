@@ -34,6 +34,11 @@ namespace TP.ConcurrentProgramming.Data
       }
     }
 
+    public override ILogger GetLogger()
+    {
+      return new DiagnosticLogger();
+    }
+
     #endregion DataAbstractAPI
 
     #region IDisposable

@@ -45,9 +45,10 @@ namespace TP.ConcurrentProgramming.BusinessLogic
       if (upperLayerHandler == null)
         throw new ArgumentNullException(nameof(upperLayerHandler));
         tableDimensions = new Dimensions(height, width, borderSize);
+        logger = layerBellow.GetLogger();
         layerBellow.Start(numberOfBalls, (startingPosition, databall ) =>
         {
-            var newBall = new Ball(databall, _balls, lckObj, tableDimensions);
+            var newBall = new Ball(databall, _balls, lckObj, tableDimensions, logger);
             _balls.Add(newBall); // Save it
             upperLayerHandler(new Position(startingPosition.x, startingPosition.y), newBall);
         }, ballDia, width, height);
@@ -68,6 +69,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
     private readonly UnderneathLayerAPI layerBellow;
     private Dimensions tableDimensions;
     private readonly object lckObj = new object();
+    private Data.ILogger logger;
 
     private void KillBalls()
     {
