@@ -121,6 +121,11 @@ namespace TP.ConcurrentProgramming.BusinessLogic.Test
         {
 
         }
+
+        public void Stop()
+        {
+
+        }
       }
 
     }

@@ -35,7 +35,11 @@ namespace TP.ConcurrentProgramming.BusinessLogic
         throw new ObjectDisposedException(nameof(BusinessLogicImplementation));
       KillBalls();
       layerBellow.Dispose();
-      Disposed = true;
+      if (logger != null)
+      {
+        logger.Stop();
+      }
+        Disposed = true;
     }
 
     public override void Start(int numberOfBalls, Action<IPosition, IBall> upperLayerHandler, double width, double height, double borderSize, double ballDia)

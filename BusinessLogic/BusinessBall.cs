@@ -36,6 +36,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
 
     internal void Stop()
     {
+      this._dataBall.NewPositionNotification -= RaisePositionChangeEvent;
       _dataBall.Stop();
     }
 
