@@ -109,8 +109,7 @@ namespace TP.ConcurrentProgramming.Data
         long now = stopwatch.ElapsedMilliseconds;
         double deltaTime = (now - lastUpdate); // miliseconds
         lastUpdate = now;
-
-        if(deltaTime > 1000)
+        if(deltaTime > 2000)
         {
           throw new Exception("EXCEEDED MAXIMUM TIME CONSTRAINT");
         }
