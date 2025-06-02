@@ -79,7 +79,6 @@ namespace TP.ConcurrentProgramming.Data
     private readonly Double mass;
     private readonly Double diameter;
     private readonly object vlock = new object();
-    private readonly object plock = new object();
 
     private void RaiseNewPositionChangeNotification()
     {
