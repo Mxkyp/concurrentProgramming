@@ -26,13 +26,53 @@ namespace TP.ConcurrentProgramming.Data
       Random random = new Random();
       for (int i = 0; i < numberOfBalls; i++)
       {
-        Vector startingPosition = new(random.Next(100, (int) tableWidth - 100), random.Next(100, (int) tableHeight - 100));
+        Vector startingPosition = SpawnIndependently(numberOfBalls, tableWidth, tableHeight, diameter);
         Vector moveVector = new(random.Next(-80, 80), random.Next(-80, 80));
         Ball newBall = new(startingPosition, moveVector, 1.0, diameter);
         upperLayerHandler(startingPosition, newBall);
         BallsList.Add(newBall);
       }
     }
+
+    private Vector SpawnIndependently(int numberOfBalls, double tableWidth, double tableHeight, double diameter)
+    {
+      Random random = new Random();
+
+        Vector startingPosition;
+        bool positionIsValid;
+
+        do
+        {
+          positionIsValid = true;
+
+        do
+        {
+          startingPosition = new Vector(
+              random.Next(100, (int)tableWidth - 100),
+              random.Next(100, (int)tableHeight - 100)
+          );
+        } while(invalidPositions.Contains(startingPosition));
+
+          foreach (Vector existingPosition in positionsTaken)
+          {
+            double distance = Math.Sqrt(
+                Math.Pow(startingPosition.x - existingPosition.x, 2) +
+                Math.Pow(startingPosition.y - existingPosition.y, 2)
+            );
+
+            if (distance < diameter)
+            {
+              invalidPositions.Add(startingPosition);
+              positionIsValid = false;
+              break;
+            }
+          }
+        }
+        while (!positionIsValid);
+
+        positionsTaken.Add(startingPosition);
+        return startingPosition;
+      }
 
     public override ILogger GetLogger()
     {
@@ -72,6 +112,8 @@ namespace TP.ConcurrentProgramming.Data
     private bool Disposed = false;
 
     private List<Ball> BallsList = [];
+    private List<Vector> positionsTaken = [];
+    private HashSet<Vector> invalidPositions = [];
 
     #endregion private
 
