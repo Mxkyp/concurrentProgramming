@@ -69,7 +69,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
         double newXVel;
         double newYVel;
 
-        if (currentPosition.x <= 0 || currentPosition.x >= dim.TableWidth - _dataBall.Diameter - 2 * dim.TableBorderSize)
+        if ((currentPosition.x <= 0 && currentVel.x <= 0) || (currentPosition.x >= dim.TableWidth - _dataBall.Diameter - 2 * dim.TableBorderSize) && currentVel.x >= 0)
         {
 
           logger.Log(Thread.CurrentThread.ManagedThreadId, "COLIDED with vertical wall", currentPosition, currentVel);
@@ -79,7 +79,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
           _dataBall.setVelocity(newXVel, newYVel);
         }
 
-        if (currentPosition.y <= 0 || currentPosition.y >= dim.TableHeight - _dataBall.Diameter - 2 * dim.TableBorderSize)
+        if ( (currentPosition.y <= 0 && currentVel.y <= 0) || (currentPosition.y >= dim.TableHeight - _dataBall.Diameter - 2 * dim.TableBorderSize) && currentVel.y >= 0)
         {
           logger.Log(Thread.CurrentThread.ManagedThreadId, "COLIDED with horizontal wall", currentPosition, currentVel);
           // Reverse Y velocity (elastic bounce)

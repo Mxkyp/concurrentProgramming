@@ -21,25 +21,15 @@ namespace TP.ConcurrentProgramming.Data
     }
     public void Log(int threadId, string message, IVector position, IVector velocity)
     {
-      var entry = new LogEntry
-      {
-        Timestamp = DateTime.Now.ToString("O"),
-        ThreadId = threadId,
-        Message = message,
-        Position = position,
-        Velocity = velocity
-      };
-
-      string json = JsonSerializer.Serialize(entry);
-      buffer.TryAdd(json);
+      buffer.TryAdd(new LogEntry(threadId,  message, position, velocity));
     }
     private void WriteLoop()
     {
       using StreamWriter writer = new StreamWriter(filePath, append: true);
       while (true)
       {
-        string? log = buffer.WaitAndTake();
-        writer.WriteLine(log);
+        LogEntry? log = buffer.WaitAndTake();
+        writer.WriteLine(JsonSerializer.Serialize(log));
         writer.Flush(); // immediate write (real-time)
       }
     }
