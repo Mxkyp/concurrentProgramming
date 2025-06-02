@@ -67,7 +67,7 @@ namespace TP.ConcurrentProgramming.Data
 
   public interface ILogger
   {
-    void Log(int threadId, string message, IVector position, IVector velocity);
+    void Log(string timeStamp, int threadId, string message, IVector position, IVector velocity);
     void Stop();
   }
 }

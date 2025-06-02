@@ -16,9 +16,9 @@ namespace TP.ConcurrentProgramming.Data
       writerThread = new Thread(WriteLoop);
       writerThread.Start();
     }
-    public void Log(int threadId, string message, IVector position, IVector velocity)
+    public void Log(string timestamp, int threadId, string message, IVector position, IVector velocity)
     {
-      buffer.TryAdd(new LogEntry(threadId,  message, position, velocity));
+      buffer.TryAdd(new LogEntry(timestamp, threadId,  message, position, velocity));
     }
 
     public void Stop()

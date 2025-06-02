@@ -69,7 +69,7 @@ namespace TP.ConcurrentProgramming.Data.Test
     }
     private class MockLogger : ILogger
     {
-      public void Log(int i, string s, IVector p, IVector v)
+      public void Log(string s1, int i, string s, IVector p, IVector v)
       {
 
       }

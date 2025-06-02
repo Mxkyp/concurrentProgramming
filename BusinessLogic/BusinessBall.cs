@@ -58,7 +58,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
     {
         currentPosition = e;
         Data.IVector myVelocity = this._dataBall.Velocity;
-        logger.Log(Thread.CurrentThread.ManagedThreadId,"position changed", currentPosition, myVelocity);
+        logger.Log(DateTime.Now.ToString("O"), Thread.CurrentThread.ManagedThreadId, "position changed", currentPosition, myVelocity);
         CheckCollisionsWithOtherBalls();
         HandleWallCollision();
         NewPositionNotification?.Invoke(this, new Position(currentPosition.x, currentPosition.y));
@@ -74,7 +74,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
 
         if ((currentPosition.x <= 0 && currentVel.x <= 0) || (currentPosition.x >= dim.TableWidth - _dataBall.Diameter - 2 * dim.TableBorderSize) && currentVel.x >= 0)
         {
-          logger.Log(Thread.CurrentThread.ManagedThreadId, "COLIDED with vertical wall", currentPosition, currentVel);
+          logger.Log(DateTime.Now.ToString("O"), Thread.CurrentThread.ManagedThreadId, "COLIDED with vertical wall", currentPosition, currentVel);
           // Reverse X velocity (elastic bounce)
           newXVel = -currentVel.x;
           newYVel = currentVel.y;
@@ -83,7 +83,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
 
         if ( (currentPosition.y <= 0 && currentVel.y <= 0) || (currentPosition.y >= dim.TableHeight - _dataBall.Diameter - 2 * dim.TableBorderSize) && currentVel.y >= 0)
         {
-          logger.Log(Thread.CurrentThread.ManagedThreadId, "COLIDED with horizontal wall", currentPosition, currentVel);
+          logger.Log(DateTime.Now.ToString("O"), Thread.CurrentThread.ManagedThreadId, "COLIDED with horizontal wall", currentPosition, currentVel);
           // Reverse Y velocity (elastic bounce)
           newXVel = currentVel.x;
           newYVel = -currentVel.y;
@@ -121,7 +121,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
         Data.IVector otherVelocity = other._dataBall.Velocity;
         Data.IVector myVelocity = _dataBall.Velocity;
 
-        logger.Log(Thread.CurrentThread.ManagedThreadId, $"COLIDED with {otherPos.x:F2},{otherPos.y:F2} with velocity {otherVelocity.x:F2},{otherVelocity.y:F2}", currentPosition, myVelocity);
+        logger.Log(DateTime.Now.ToString("O"), Thread.CurrentThread.ManagedThreadId, $"COLIDED with {otherPos.x:F2},{otherPos.y:F2} with velocity {otherVelocity.x:F2},{otherVelocity.y:F2}", currentPosition, myVelocity);
 
         if (distance == 0)
           return; // Prevent division by zero (balls perfectly overlapping)

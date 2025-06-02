@@ -91,7 +91,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic.Test
       }
 
       private class LoggerFixture : Data.ILogger {
-        public void Log(int threadId, string message, Data.IVector position, Data.IVector velocity)
+        public void Log(string time, int threadId, string message, Data.IVector position, Data.IVector velocity)
         {
 
         }
