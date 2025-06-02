@@ -9,8 +9,8 @@ namespace TP.ConcurrentProgramming.Data
     private readonly string filePath;
     internal DiagnosticLogger(string relativePath = @"..\..\..\..\logs\diagnostic.json", int bufferCapacity = 500)
     {
-      filePath = Path.GetFullPath(relativePath); // resolves relative path correctly
-      Directory.CreateDirectory(Path.GetDirectoryName(filePath)!); // ensures logs/ exists
+      filePath = Path.GetFullPath(relativePath); 
+      Directory.CreateDirectory(Path.GetDirectoryName(filePath)!); 
 
       buffer = new DiagnosticBuffer(bufferCapacity);
       writerThread = new Thread(WriteLoop);

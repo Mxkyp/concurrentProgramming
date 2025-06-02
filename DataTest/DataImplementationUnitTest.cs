@@ -32,6 +32,7 @@ namespace TP.ConcurrentProgramming.Data.Test
     {
       DataImplementation newInstance = new DataImplementation();
       bool newInstanceDisposed = false;
+      MockLogger logger = new MockLogger();
       newInstance.CheckObjectDisposed(x => newInstanceDisposed = x);
       Assert.IsFalse(newInstanceDisposed);
       newInstance.Dispose();
@@ -42,7 +43,7 @@ namespace TP.ConcurrentProgramming.Data.Test
       Assert.IsNotNull(ballsList);
       newInstance.CheckNumberOfBalls(x => Assert.AreEqual<int>(0, x));
       Assert.ThrowsException<ObjectDisposedException>(() => newInstance.Dispose());
-      Assert.ThrowsException<ObjectDisposedException>(() => newInstance.Start(0, (position, ball) => { }, 10.0, 2000.0, 2000.0));
+      Assert.ThrowsException<ObjectDisposedException>(() => newInstance.Start(0, (position, ball) => { }, 10.0, 2000.0, 2000.0, logger));
     }
 
     [TestMethod]
@@ -52,6 +53,7 @@ namespace TP.ConcurrentProgramming.Data.Test
       {
         int numberOfCallbackInvoked = 0;
         int numberOfBalls2Create = 10;
+        MockLogger logger = new MockLogger();
         newInstance.Start(
           numberOfBalls2Create,
           (startingPosition, ball) =>
@@ -60,10 +62,23 @@ namespace TP.ConcurrentProgramming.Data.Test
             Assert.IsTrue(startingPosition.x >= 0);
             Assert.IsTrue(startingPosition.y >= 0);
             Assert.IsNotNull(ball);
-          }, 10.0, 2000.0, 2000.0);
+          }, 10.0, 2000.0, 2000.0, logger);
         Assert.AreEqual<int>(numberOfBalls2Create, numberOfCallbackInvoked);
         newInstance.CheckNumberOfBalls(x => Assert.AreEqual<int>(10, x));
       }
     }
+    private class MockLogger : ILogger
+    {
+      public void Log(int i, string s, IVector p, IVector v)
+      {
+
+      }
+      
+      public void Stop()
+      {
+
+      }
+    }
   }
+
 }

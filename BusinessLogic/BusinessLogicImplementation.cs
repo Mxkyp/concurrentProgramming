@@ -55,7 +55,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
             var newBall = new Ball(databall, _balls, lckObj, tableDimensions, startingPosition, logger);
             _balls.Add(newBall); // Save it
             upperLayerHandler(new Position(startingPosition.x, startingPosition.y), newBall);
-        }, ballDia, width, height);
+        }, ballDia, width, height, logger);
 
       foreach(var ball in _balls)
       {

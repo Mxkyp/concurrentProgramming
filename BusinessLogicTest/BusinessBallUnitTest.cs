@@ -8,6 +8,7 @@
 //
 //_____________________________________________________________________________________________________________________________________
 
+
 namespace TP.ConcurrentProgramming.BusinessLogic.Test
 {
   [TestClass]
@@ -80,7 +81,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic.Test
       public override void Dispose()
       { }
 
-      public override void Start(int numberOfBalls, Action<Data.IVector, Data.IBall> upperLayerHandler, double diameter, double tableWidth, double tableHeight)
+      public override void Start(int numberOfBalls, Action<Data.IVector, Data.IBall> upperLayerHandler, double diameter, double tableWidth, double tableHeight, Data.ILogger logger)
       {
         throw new NotImplementedException();
       }
