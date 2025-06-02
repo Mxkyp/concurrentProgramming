@@ -113,7 +113,7 @@ namespace TP.ConcurrentProgramming.Data
 
         if(deltaTime > 1000)
         {
-          throw new Exception("shouldnt happen");
+          throw new Exception("EXCEEDED MAXIMUM TIME CONSTRAINT");
         }
 
         IVector vel = Velocity;
