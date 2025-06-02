@@ -56,6 +56,8 @@ namespace TP.ConcurrentProgramming.BusinessLogic
     private void RaisePositionChangeEvent(object? sender, Data.IVector e)
     {
         currentPosition = e;
+        Data.IVector myVelocity = this._dataBall.Velocity;
+        logger.Log(Thread.CurrentThread.ManagedThreadId,"position changed", currentPosition, myVelocity);
         CheckCollisionsWithOtherBalls();
         HandleWallCollision();
         NewPositionNotification?.Invoke(this, new Position(currentPosition.x, currentPosition.y));
@@ -71,7 +73,6 @@ namespace TP.ConcurrentProgramming.BusinessLogic
 
         if ((currentPosition.x <= 0 && currentVel.x <= 0) || (currentPosition.x >= dim.TableWidth - _dataBall.Diameter - 2 * dim.TableBorderSize) && currentVel.x >= 0)
         {
-
           logger.Log(Thread.CurrentThread.ManagedThreadId, "COLIDED with vertical wall", currentPosition, currentVel);
           // Reverse X velocity (elastic bounce)
           newXVel = -currentVel.x;
