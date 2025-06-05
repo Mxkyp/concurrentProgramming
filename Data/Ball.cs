@@ -20,6 +20,7 @@ namespace TP.ConcurrentProgramming.Data
       velocity = initialVelocity;
       this.mass = mass;
       this.diameter = diameter;
+      BallId = Guid.NewGuid();
     }
 
     #endregion ctor
@@ -61,6 +62,12 @@ namespace TP.ConcurrentProgramming.Data
       init { mass = value; }
     }
 
+    public Guid BallId
+    {
+      get { return ballId; }
+      init { ballId = value; }
+    }
+
     public void setVelocity(double x, double y)
     {
       lock (vlock)
@@ -78,6 +85,7 @@ namespace TP.ConcurrentProgramming.Data
     private Vector velocity;
     private readonly Double mass;
     private readonly Double diameter;
+    private readonly Guid ballId;
     private readonly object vlock = new object();
 
     private void RaiseNewPositionChangeNotification()

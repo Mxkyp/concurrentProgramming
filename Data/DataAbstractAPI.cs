@@ -60,6 +60,7 @@ namespace TP.ConcurrentProgramming.Data
     IVector Velocity { get; }
     Double Mass { get; init; }
     Double Diameter { get; init; }
+    Guid BallId { get; init; }
     void setVelocity(double x, double y);
     void Start();
     void Stop();

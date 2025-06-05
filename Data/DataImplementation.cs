@@ -29,7 +29,6 @@ namespace TP.ConcurrentProgramming.Data
         Vector startingPosition = SpawnIndependently(numberOfBalls, tableWidth, tableHeight, diameter);
         Vector moveVector = new(random.Next(-80, 80), random.Next(-80, 80));
         Ball newBall = new(startingPosition, moveVector, 1.0, diameter);
-        logger.Log(DateTime.Now.ToString("O"), Thread.CurrentThread.ManagedThreadId, "Ball created at", startingPosition, moveVector);
         upperLayerHandler(startingPosition, newBall);
         BallsList.Add(newBall);
       }
