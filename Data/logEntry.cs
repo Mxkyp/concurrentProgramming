@@ -1,20 +1,29 @@
 ﻿namespace TP.ConcurrentProgramming.Data
 {
-  internal class LogEntry
+  internal interface ILogEntry
   {
-    internal LogEntry(string timeStamp, int threadId, string message, IVector position, IVector velocity)
+    public DateTime Timestamp { get; init; }
+    public Guid BallId { get; init; }
+    public string Message { get; init; }
+    public IVector Position { get; init; }
+    public IVector Velocity { get; init; }
+  }
+
+  internal class LogEntry : ILogEntry 
+  {
+    internal LogEntry(DateTime timeStamp, int threadId, string message, IVector position, IVector velocity)
     {
       Timestamp = timeStamp;
-      ThreadId = threadId;
+      BallId = threadId;
       Message = message;
       Position = position;
       Velocity = velocity;
     }
 
-    public string Timestamp { get; init; }
-    public int ThreadId { get; init; }
+    public DateTime Timestamp { get; init; }
+    public Guid BallId { get; init; }
+    public string Message { get; init; }
     public IVector Position { get; init; }
     public IVector Velocity { get; init; }
-    public string Message { get; init; }
   }
 }
