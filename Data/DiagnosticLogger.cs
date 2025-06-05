@@ -5,10 +5,11 @@ namespace TP.ConcurrentProgramming.Data
 {
   internal class DiagnosticLogger : ILogger
   {
-   private readonly BlockingCollection<ILogEntry> buffer;
+    private static readonly Lazy<DiagnosticLogger> singletonInstance = new Lazy<DiagnosticLogger>(() => new DiagnosticLogger());
+    private readonly BlockingCollection<ILogEntry> buffer;
     private readonly Thread writerThread;
     private readonly string filePath;
-    internal DiagnosticLogger(string relativePath = @"..\..\..\..\logs\diagnostic.json", int bufferCapacity = 500)
+    private DiagnosticLogger(string relativePath = @"..\..\..\..\logs\diagnostic.json", int bufferCapacity = 500)
     {
       filePath = Path.GetFullPath(relativePath); 
       Directory.CreateDirectory(Path.GetDirectoryName(filePath)!); 
@@ -17,6 +18,14 @@ namespace TP.ConcurrentProgramming.Data
       writerThread = new Thread(WriteLoop);
       writerThread.Start();
     }
+    internal static DiagnosticLogger LoggerInstance
+    {
+      get
+      {
+        return singletonInstance.Value;
+      }
+    }
+
     public void Log(DateTime timestamp, Guid ballId, string message, IVector position, IVector velocity)
     {
       buffer.TryAdd(new LogEntry(timestamp, ballId,  message, position, velocity));

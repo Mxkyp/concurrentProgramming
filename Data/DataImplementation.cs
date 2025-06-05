@@ -76,7 +76,7 @@ namespace TP.ConcurrentProgramming.Data
 
     public override ILogger GetLogger()
     {
-      return new DiagnosticLogger();
+      return DiagnosticLogger.LoggerInstance;
     }
 
     #endregion DataAbstractAPI
