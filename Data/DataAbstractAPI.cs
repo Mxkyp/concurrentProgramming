@@ -65,9 +65,9 @@ namespace TP.ConcurrentProgramming.Data
     void Stop();
   }
 
-  public interface ILogger
+  public interface ILogger : IDisposable
   {
-    void Log(string timeStamp, int threadId, string message, IVector position, IVector velocity);
-    void Stop();
+    void Log(DateTime timestamp, Guid ballId, string message, IVector position, IVector velocity);
+    void LogBallCollision(DateTime timeStamp, Guid ballId, string message, IVector position, IVector velocity, Guid ballId2, IVector position2, IVector velocity2);
   }
 }

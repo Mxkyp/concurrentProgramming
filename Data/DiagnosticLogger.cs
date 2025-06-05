@@ -22,13 +22,31 @@ namespace TP.ConcurrentProgramming.Data
       buffer.TryAdd(new LogEntry(timestamp, ballId,  message, position, velocity));
     }
 
+    public void LogBallCollision(DateTime timeStamp, Guid ballId, string message, IVector position, IVector velocity, Guid ballId2, IVector position2, IVector velocity2)
+    {
+      buffer.TryAdd(new BallCollisionLogEntry(timeStamp, ballId, message, position, velocity, ballId2, position2, velocity2));
+    }
+
+    public void Dispose()
+    {
+      buffer.CompleteAdding();
+    }
+
     private void WriteLoop()
     {
       using StreamWriter writer = new StreamWriter(filePath, append: true);
       while (true)
       {
-        LogEntry? log = WaitAndTake();
+        ILogEntry? log = WaitAndTake();
         if (log == null) { break; }
+        if (log is LogEntry logEntry)
+        {
+          writer.WriteLine(JsonSerializer.Serialize(logEntry));
+        }
+        else if (log is BallCollisionLogEntry collisionLogEntry)
+        {
+          writer.WriteLine(JsonSerializer.Serialize(collisionLogEntry));
+        }
         writer.WriteLine(JsonSerializer.Serialize(log));
         writer.Flush(); // immediate write (real-time)
       }
@@ -48,5 +66,6 @@ namespace TP.ConcurrentProgramming.Data
 
       return result;
    }
+  
   }
 }
