@@ -32,7 +32,7 @@ namespace TP.ConcurrentProgramming.Data.Test
     {
       DataImplementation newInstance = new DataImplementation();
       bool newInstanceDisposed = false;
-      MockLogger logger = new MockLogger();
+      LoggerFix logger = new LoggerFix();
       newInstance.CheckObjectDisposed(x => newInstanceDisposed = x);
       Assert.IsFalse(newInstanceDisposed);
       newInstance.Dispose();
@@ -53,7 +53,7 @@ namespace TP.ConcurrentProgramming.Data.Test
       {
         int numberOfCallbackInvoked = 0;
         int numberOfBalls2Create = 10;
-        MockLogger logger = new MockLogger();
+        LoggerFix logger = new LoggerFix();
         newInstance.Start(
           numberOfBalls2Create,
           (startingPosition, ball) =>
@@ -67,17 +67,24 @@ namespace TP.ConcurrentProgramming.Data.Test
         newInstance.CheckNumberOfBalls(x => Assert.AreEqual<int>(10, x));
       }
     }
-    private class MockLogger : ILogger
+    private class LoggerFix : ILogger
     {
-      public void Log(string s1, int i, string s, IVector p, IVector v)
-      {
+    public void Log(DateTime timestamp, Guid ballId, IVector position, IVector velocity)
+    {
 
-      }
-      
-      public void Stop()
-      {
+    }
+    public void LogBallCollision(DateTime timeStamp, Guid ballId, IVector position, IVector velocity, Guid ballId2, IVector position2, IVector velocity2)
+    {
 
-      }
+    }
+    public void LogWallCollision(DateTime timestamp, Guid ballId, IVector position, IVector velocity)
+    {
+
+    }
+    public void Dispose()
+    {
+
+    }
     }
   }
 

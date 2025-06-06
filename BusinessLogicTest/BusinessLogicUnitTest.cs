@@ -52,7 +52,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic.Test
         int numberOfBalls2Create = 1;
         newInstance.Start(
           numberOfBalls2Create,
-          (startingPosition, ball) => { called++; Assert.IsNotNull(startingPosition); Assert.IsNotNull(ball);}, 10, 10, 10, 10);
+          (startingPosition, ball) => { called++; Assert.IsNotNull(startingPosition); Assert.IsNotNull(ball); }, 10, 10, 10, 10);
         Assert.AreEqual<int>(1, called);
         Assert.IsTrue(dataLayerFixcure.StartCalled);
         Assert.AreEqual<int>(numberOfBalls2Create, dataLayerFixcure.NumberOfBallseCreated);
@@ -113,72 +113,82 @@ namespace TP.ConcurrentProgramming.BusinessLogic.Test
       }
       public override Data.ILogger GetLogger()
       {
-        return new LoggerFixture();
+        return new LoggerFix();
       }
 
-      private class LoggerFixture : Data.ILogger {
-        public void Log(string time, int threadId, string message, Data.IVector position, Data.IVector velocity)
+      private class LoggerFix : Data.ILogger
+      {
+        public void Log(DateTime timestamp, Guid ballId, Data.IVector position, Data.IVector velocity)
         {
 
+        }
+        public void LogBallCollision(DateTime timeStamp, Guid ballId, Data.IVector position, Data.IVector velocity, Guid ballId2, Data.IVector position2, Data.IVector velocity2)
+        {
+
+        }
+        public void LogWallCollision(DateTime timestamp, Guid ballId, Data.IVector position, Data.IVector velocity)
+        {
+
+        }
+        public void Dispose()
+        {
+
+        }
+
+      }
+      private record DataVectorFixture : Data.IVector
+      {
+        internal DataVectorFixture(double X, double Y)
+        {
+          x = X; y = Y;
+        }
+        internal DataVectorFixture()
+        {
+          x = 0; y = 0;
+        }
+
+        public double x { get; init; }
+        public double y { get; init; }
+      }
+      private class DataBallFixture : Data.IBall
+      {
+        internal DataBallFixture()
+        {
+          Position = new DataVectorFixture(0, 0);
+          Velocity = new DataVectorFixture(0, 0);
+          Mass = 1.0;
+          Diameter = 10.0;
+        }
+
+        public Data.IVector Velocity { get; }
+        public Data.IVector Position { get; }
+
+        public Guid BallId { get; init;  }
+
+        public void setVelocity(double x, double y)
+        {
+        }
+        public Double Mass { get; init; }
+        public Double Diameter { get; init; }
+        public void Start()
+        {
+          Move();
         }
 
         public void Stop()
         {
 
         }
+
+        public event EventHandler<Data.IVector>? NewPositionNotification;
+
+        private void Move()
+        {
+          NewPositionNotification.Invoke(this, new DataVectorFixture(0.0, 0.0));
+        }
       }
 
+      #endregion testing instrumentation
     }
-    private record DataVectorFixture : Data.IVector
-    {
-      internal DataVectorFixture(double X, double Y)
-      {
-        x = X; y = Y;
-      }
-      internal DataVectorFixture()
-      {
-        x = 0; y = 0;
-      }
-
-      public double x { get; init; }
-      public double y { get; init; }
-    }
-    private class DataBallFixture : Data.IBall
-    {
-      internal DataBallFixture()
-      {
-        Position = new DataVectorFixture(0, 0);
-        Velocity = new DataVectorFixture(0, 0);
-        Mass = 1.0;
-        Diameter = 10.0;
-      }
-
-      public Data.IVector Velocity { get; }
-      public Data.IVector Position { get; }
-
-      public void setVelocity(double x, double y)
-      {
-      }
-      public Double Mass { get; init; }
-      public Double Diameter { get; init; }
-      public void Start()
-      {
-        Move();
-      }
-
-      public void Stop()
-      {
-
-      }
-
-      public event EventHandler<Data.IVector>? NewPositionNotification;
-
-      private void Move()
-      {
-        NewPositionNotification.Invoke(this, new DataVectorFixture(0.0, 0.0));
-      }
-    }
-
-    #endregion testing instrumentation
   }
   }

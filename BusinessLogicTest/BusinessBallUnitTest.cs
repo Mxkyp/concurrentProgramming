@@ -40,7 +40,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic.Test
       private VectorFixture velocity;
       public Data.IVector Velocity { get; }
       public Data.IVector Position { get; }
-
+      public Guid BallId { get; init;  }
       public void setVelocity(double x, double y)
       {
       }
@@ -87,19 +87,28 @@ namespace TP.ConcurrentProgramming.BusinessLogic.Test
       }
       public override Data.ILogger GetLogger()
       {
-        return new LoggerFixture();
+        return new LoggerFix();
       }
 
-      private class LoggerFixture : Data.ILogger {
-        public void Log(string time, int threadId, string message, Data.IVector position, Data.IVector velocity)
+      private class LoggerFix : Data.ILogger
+      {
+        public void Log(DateTime timestamp, Guid ballId, Data.IVector position, Data.IVector velocity)
+        {
+
+        }
+        public void LogBallCollision(DateTime timeStamp, Guid ballId, Data.IVector position, Data.IVector velocity, Guid ballId2, Data.IVector position2, Data.IVector velocity2)
+        {
+
+        }
+        public void LogWallCollision(DateTime timestamp, Guid ballId, Data.IVector position, Data.IVector velocity)
+        {
+
+        }
+        public void Dispose()
         {
 
         }
 
-        public void Stop()
-        {
-
-        }
       }
     }
 
