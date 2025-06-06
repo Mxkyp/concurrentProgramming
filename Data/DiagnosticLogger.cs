@@ -56,7 +56,6 @@ namespace TP.ConcurrentProgramming.Data
         {
           writer.WriteLine(JsonSerializer.Serialize(collisionLogEntry));
         }
-        writer.WriteLine(JsonSerializer.Serialize(log));
         writer.Flush(); // immediate write (real-time)
       }
     }
