@@ -26,14 +26,16 @@ namespace TP.ConcurrentProgramming.Data
       }
     }
 
-    public void Log(DateTime timestamp, Guid ballId, string message, IVector position, IVector velocity)
+    public void Log(DateTime timestamp, Guid ballId, IVector position, IVector velocity)
     {
-      buffer.TryAdd(new LogEntry(timestamp, ballId,  message, position, velocity));
+      if(!buffer.IsAddingCompleted)
+        buffer.TryAdd(new LogEntry(timestamp, ballId, position, velocity));
     }
 
-    public void LogBallCollision(DateTime timeStamp, Guid ballId, string message, IVector position, IVector velocity, Guid ballId2, IVector position2, IVector velocity2)
+    public void LogBallCollision(DateTime timeStamp, Guid ballId, IVector position, IVector velocity, Guid ballId2, IVector position2, IVector velocity2)
     {
-      buffer.TryAdd(new BallCollisionLogEntry(timeStamp, ballId, message, position, velocity, ballId2, position2, velocity2));
+      if(!buffer.IsAddingCompleted)
+        buffer.TryAdd(new BallCollisionLogEntry(timeStamp, ballId, position, velocity, ballId2, position2, velocity2));
     }
 
     public void Dispose()
