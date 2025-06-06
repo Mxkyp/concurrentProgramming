@@ -95,11 +95,13 @@ namespace TP.ConcurrentProgramming.Data
       NewPositionNotification?.Invoke(this, position);
     }
 
-    private void Move(double time, IVector vel)
+    private IVector Move(double time)
     {
+      IVector vel = Velocity;
       position = new Vector(position.x + vel.x * (time / 1000), position.y + vel.y * (time / 1000));
       logger.Log(DateTime.UtcNow, BallId, position, vel);
       RaiseNewPositionChangeNotification();
+      return vel;
     }
 
     private int CalculateRefresh(IVector velocity)
@@ -125,9 +127,7 @@ namespace TP.ConcurrentProgramming.Data
           throw new Exception("EXCEEDED MAXIMUM TIME CONSTRAINT");
         }
 
-        IVector vel = Velocity;
-        Move(deltaTime, vel);
-
+        IVector vel = Move(deltaTime);
         int refreshTime = CalculateRefresh(vel);
         Thread.Sleep(refreshTime);  
         }
