@@ -14,13 +14,14 @@ namespace TP.ConcurrentProgramming.Data
   {
     #region ctor
 
-    internal Ball(Vector initialPosition, Vector initialVelocity, double mass, double diameter)
+    internal Ball(Vector initialPosition, Vector initialVelocity, double mass, double diameter, ILogger logger)
     {
       position = initialPosition;
       velocity = initialVelocity;
       this.mass = mass;
       this.diameter = diameter;
       BallId = Guid.NewGuid();
+      this.logger = logger;
     }
 
     #endregion ctor
@@ -86,6 +87,7 @@ namespace TP.ConcurrentProgramming.Data
     private readonly Double mass;
     private readonly Double diameter;
     private readonly Guid ballId;
+    private readonly ILogger logger;
     private readonly object vlock = new object();
 
     private void RaiseNewPositionChangeNotification()
@@ -96,6 +98,7 @@ namespace TP.ConcurrentProgramming.Data
     private void Move(double time, IVector vel)
     {
       position = new Vector(position.x + vel.x * (time / 1000), position.y + vel.y * (time / 1000));
+      logger.Log(DateTime.UtcNow, BallId, position, vel);
       RaiseNewPositionChangeNotification();
     }
 

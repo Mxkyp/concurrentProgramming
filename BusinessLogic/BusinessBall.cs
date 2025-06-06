@@ -59,8 +59,6 @@ namespace TP.ConcurrentProgramming.BusinessLogic
     private void RaisePositionChangeEvent(object? sender, Data.IVector e)
     {
         currentPosition = e;
-        Data.IVector myVelocity = this._dataBall.Velocity;
-        logger.Log(DateTime.UtcNow, underneathBallId, "position changed", currentPosition, myVelocity);
         CheckCollisionsWithOtherBalls();
         HandleWallCollision();
         NewPositionNotification?.Invoke(this, new Position(currentPosition.x, currentPosition.y));
@@ -76,7 +74,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
 
         if ((currentPosition.x <= 0 && currentVel.x <= 0) || (currentPosition.x >= dim.TableWidth - _dataBall.Diameter - 2 * dim.TableBorderSize) && currentVel.x >= 0)
         {
-          logger.Log(DateTime.UtcNow, underneathBallId, "COLIDED with vertical wall", currentPosition, currentVel);
+          logger.Log(DateTime.UtcNow, underneathBallId, currentPosition, currentVel);
           // Reverse X velocity (elastic bounce)
           newXVel = -currentVel.x;
           newYVel = currentVel.y;
@@ -85,7 +83,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
 
         if ( (currentPosition.y <= 0 && currentVel.y <= 0) || (currentPosition.y >= dim.TableHeight - _dataBall.Diameter - 2 * dim.TableBorderSize) && currentVel.y >= 0)
         {
-          logger.Log(DateTime.UtcNow, underneathBallId, "COLIDED with horizontal wall", currentPosition, currentVel);
+          logger.Log(DateTime.UtcNow, underneathBallId, currentPosition, currentVel);
           // Reverse Y velocity (elastic bounce)
           newXVel = currentVel.x;
           newYVel = -currentVel.y;
@@ -123,7 +121,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
         Data.IVector otherVelocity = other._dataBall.Velocity;
         Data.IVector myVelocity = _dataBall.Velocity;
 
-        logger.LogBallCollision(DateTime.UtcNow, underneathBallId, "colided", currentPosition, myVelocity, other._dataBall.BallId, otherPos, otherVelocity);
+        logger.LogBallCollision(DateTime.UtcNow, underneathBallId, currentPosition, myVelocity, other._dataBall.BallId, otherPos, otherVelocity);
 
         if (distance == 0)
           return; // Prevent division by zero (balls perfectly overlapping)
