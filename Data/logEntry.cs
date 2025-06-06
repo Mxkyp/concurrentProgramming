@@ -57,4 +57,21 @@
     public IVector Position2 { get; init; }
     public IVector Velocity2 { get; init; }
   }
+  internal class WallCollisionEntry : ILogEntry 
+  {
+    internal WallCollisionEntry(DateTime timeStamp, Guid ballId, IVector position, IVector velocity)
+    {
+      Timestamp = timeStamp;
+      BallId = ballId;
+      Type = LogType.WALL_COLLISION;
+      Position = position;
+      Velocity = velocity; 
+    }
+
+    public DateTime Timestamp { get; init; }
+    public Guid BallId { get; init; }
+    public LogType Type { get; init; }
+    public IVector Position { get; init; }
+    public IVector Velocity { get; init; }
+  }
 }

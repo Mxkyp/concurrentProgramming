@@ -8,6 +8,7 @@
 //
 //_____________________________________________________________________________________________________________________________________
 
+
 namespace TP.ConcurrentProgramming.Data
 {
   internal class Ball : IBall
@@ -122,10 +123,6 @@ namespace TP.ConcurrentProgramming.Data
         long now = stopwatch.ElapsedMilliseconds;
         double deltaTime = (now - lastUpdate); // miliseconds
         lastUpdate = now;
-        if(deltaTime > 2000)
-        {
-          throw new Exception("EXCEEDED MAXIMUM TIME CONSTRAINT");
-        }
 
         IVector vel = Move(deltaTime);
         int refreshTime = CalculateRefresh(vel);

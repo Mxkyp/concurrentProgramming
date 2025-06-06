@@ -37,6 +37,11 @@ namespace TP.ConcurrentProgramming.Data
       if(!buffer.IsAddingCompleted)
         buffer.TryAdd(new BallCollisionLogEntry(timeStamp, ballId, position, velocity, ballId2, position2, velocity2));
     }
+    public void LogWallCollision(DateTime timestamp, Guid ballId, IVector position, IVector velocity)
+    {
+      if(!buffer.IsAddingCompleted)
+        buffer.TryAdd(new WallCollisionEntry(timestamp, ballId, position, velocity));
+    }
 
     public void Dispose()
     {
@@ -57,6 +62,10 @@ namespace TP.ConcurrentProgramming.Data
         else if (log is BallCollisionLogEntry collisionLogEntry)
         {
           writer.WriteLine(JsonSerializer.Serialize(collisionLogEntry));
+        }
+        else if (log is WallCollisionEntry wallCollisionEntry)
+        {
+          writer.WriteLine(JsonSerializer.Serialize(wallCollisionEntry));
         }
         writer.Flush(); // immediate write (real-time)
       }

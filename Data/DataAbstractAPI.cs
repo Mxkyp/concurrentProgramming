@@ -70,5 +70,6 @@ namespace TP.ConcurrentProgramming.Data
   {
     void Log(DateTime timestamp, Guid ballId, IVector position, IVector velocity);
     void LogBallCollision(DateTime timeStamp, Guid ballId, IVector position, IVector velocity, Guid ballId2, IVector position2, IVector velocity2);
+    void LogWallCollision(DateTime timestamp, Guid ballId, IVector position, IVector velocity);
   }
 }
