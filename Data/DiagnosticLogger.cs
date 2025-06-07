@@ -8,9 +8,12 @@ namespace TP.ConcurrentProgramming.Data
     private static readonly Lazy<DiagnosticLogger> singletonInstance = new Lazy<DiagnosticLogger>(() => new DiagnosticLogger());
     private readonly BlockingCollection<ILogEntry> buffer;
     private readonly Thread writerThread;
+    private int logsMissed = 0;
     private readonly string filePath;
-    private DiagnosticLogger(string relativePath = @"..\..\..\..\logs\diagnostic.json", int bufferCapacity = 500)
+    private DiagnosticLogger(int bufferCapacity = 500)
     {
+      string relativePath = @"..\..\..\..\logs\";
+      relativePath = Path.Combine(relativePath, $"diagnostics_{DateTime.UtcNow.ToString("yyyy-MM-dd_HH-mm")}.json");
       filePath = Path.GetFullPath(relativePath); 
       Directory.CreateDirectory(Path.GetDirectoryName(filePath)!); 
 
@@ -29,18 +32,27 @@ namespace TP.ConcurrentProgramming.Data
     public void Log(DateTime timestamp, Guid ballId, IVector position, IVector velocity)
     {
       if(!buffer.IsAddingCompleted)
-        buffer.TryAdd(new LogEntry(timestamp, ballId, position, velocity));
+        if(!buffer.TryAdd(new LogEntry(timestamp, ballId, position, velocity)))
+        {
+          Interlocked.Increment(ref logsMissed);
+        }
     }
 
     public void LogBallCollision(DateTime timeStamp, Guid ballId, IVector position, IVector velocity, Guid ballId2, IVector position2, IVector velocity2)
     {
       if(!buffer.IsAddingCompleted)
-        buffer.TryAdd(new BallCollisionLogEntry(timeStamp, ballId, position, velocity, ballId2, position2, velocity2));
+        if(!buffer.TryAdd(new BallCollisionLogEntry(timeStamp, ballId, position, velocity, ballId2, position2, velocity2)))
+        {
+          Interlocked.Increment(ref logsMissed);
+        }
     }
     public void LogWallCollision(DateTime timestamp, Guid ballId, IVector position, IVector velocity)
     {
       if(!buffer.IsAddingCompleted)
-        buffer.TryAdd(new WallCollisionEntry(timestamp, ballId, position, velocity));
+        if(!buffer.TryAdd(new WallCollisionEntry(timestamp, ballId, position, velocity)))
+        { 
+          Interlocked.Increment(ref logsMissed);
+        }
     }
 
     public void Dispose()
@@ -69,6 +81,8 @@ namespace TP.ConcurrentProgramming.Data
         }
         writer.Flush(); // immediate write (real-time)
       }
+      writer.WriteLine(JsonSerializer.Serialize(new FinalLog(DateTime.UtcNow, logsMissed)));
+      writer.Flush(); 
     }
    private ILogEntry? WaitAndTake()
    {
@@ -85,6 +99,8 @@ namespace TP.ConcurrentProgramming.Data
 
       return result;
    }
+
+   private record FinalLog(DateTime TimeStamp, int LogsMissed);
   
   }
 }
