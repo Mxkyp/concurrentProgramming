@@ -10,6 +10,7 @@ namespace TP.ConcurrentProgramming.Data
     private readonly Thread writerThread;
     private int logsMissed = 0;
     private readonly string filePath;
+    private bool Disposed = false;
     private DiagnosticLogger(int bufferCapacity = 500)
     {
       string relativePath = @"..\..\..\..\logs\";
@@ -54,10 +55,23 @@ namespace TP.ConcurrentProgramming.Data
           Interlocked.Increment(ref logsMissed);
         }
     }
+  
 
     public void Dispose()
     {
-      buffer.CompleteAdding();
+      Dispose(disposing: true);
+      GC.SuppressFinalize(this);
+    }
+    public void Dispose(bool disposing)
+    {
+      if (!Disposed)
+      {
+        if (disposing)
+        {
+          buffer.CompleteAdding();
+        }
+        Disposed = true;
+      }
     }
 
     private void WriteLoop()
