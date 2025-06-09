@@ -62,29 +62,30 @@ namespace TP.ConcurrentProgramming.Data
 
     private void WriteLoop()
     {
-      using StreamWriter writer = new StreamWriter(filePath, append: true);
-      while (true)
-      {
-        ILogEntry? log = WaitAndTake();
-        if (log == null) { break; }
-        if (log is LogEntry logEntry)
+      using (StreamWriter writer = new StreamWriter(filePath, append: true)) {
+        while (true)
         {
-          writer.WriteLine(JsonSerializer.Serialize(logEntry));
+          ILogEntry? log = WaitAndTake();
+          if (log == null) { break; }
+          if (log is LogEntry logEntry)
+          {
+            writer.WriteLine(JsonSerializer.Serialize(logEntry));
+          }
+          else if (log is BallCollisionLogEntry collisionLogEntry)
+          {
+            writer.WriteLine(JsonSerializer.Serialize(collisionLogEntry));
+          }
+          else if (log is WallCollisionEntry wallCollisionEntry)
+          {
+            writer.WriteLine(JsonSerializer.Serialize(wallCollisionEntry));
+          }
+          writer.Flush(); // immediate write (real-time)
         }
-        else if (log is BallCollisionLogEntry collisionLogEntry)
-        {
-          writer.WriteLine(JsonSerializer.Serialize(collisionLogEntry));
-        }
-        else if (log is WallCollisionEntry wallCollisionEntry)
-        {
-          writer.WriteLine(JsonSerializer.Serialize(wallCollisionEntry));
-        }
-        writer.Flush(); // immediate write (real-time)
+        writer.WriteLine(JsonSerializer.Serialize(new FinalLog(DateTime.UtcNow, logsMissed)));
+        writer.Flush();
       }
-      writer.WriteLine(JsonSerializer.Serialize(new FinalLog(DateTime.UtcNow, logsMissed)));
-      writer.Flush(); 
     }
-   private ILogEntry? WaitAndTake()
+    private ILogEntry? WaitAndTake()
    {
       ILogEntry? result = null;
 
